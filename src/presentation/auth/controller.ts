@@ -9,11 +9,10 @@ export class AuthController {
 	};
 
 	registerUser = async (req: Request, res: Response) => {
-		const { error, registerUserDto } = await RegisterUserDto.create(req.body);
+		const { error, registerUserDto } = RegisterUserDto.create(req.body);
 
-		if (!error?.ok) {
-			// const { ok, message, statusCode } = customError!;
-			res.status(error!.statusCode).json(error);
+		if (error) {
+			res.status(error.statusCode).json(error);
 		}
 
 		res.status(200).json(registerUserDto);
