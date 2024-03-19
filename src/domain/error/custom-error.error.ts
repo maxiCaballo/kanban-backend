@@ -32,4 +32,11 @@ export class CustomError {
 	static internalServer(message: string = 'Internal server error'): CustomError {
 		return CustomError.create(500, message);
 	}
+	static handleError(error: unknown) {
+		if (error instanceof CustomError) {
+			return error;
+		}
+
+		return CustomError.internalServer();
+	}
 }
