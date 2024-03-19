@@ -1,6 +1,6 @@
-import { object, string, ValidationError } from 'yup';
+import { object, string } from 'yup';
 import { CustomError } from '@/domain';
-import { YupAdapter } from '@/adapters/yup.adapter';
+import { YupAdapter } from '@/config';
 
 export class RegisterUserDto {
 	private constructor(public name: string, public email: string, public password: string) {}
@@ -17,7 +17,7 @@ export class RegisterUserDto {
 		const { errors, externalError } = YupAdapter.ValidateYupSchema(schema, { name, email, password });
 
 		//Yup error
-		if (errors!.length >= 1) {
+		if (errors && errors.length >= 1) {
 			return {
 				error: CustomError.badRequest(errors),
 				registerUserDto: undefined,
