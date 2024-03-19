@@ -10,23 +10,23 @@ export interface User {
 export interface Board {
 	id: string;
 	name: string;
-	column: Column[];
+	columns: Column[];
 	shared: boolean;
-	user: User[];
+	users: User[];
 	admin: User;
 }
 
 export interface Column {
 	id: string;
 	name: string;
-	task: Task[];
+	tasks: Task[];
 }
 
 export interface Task {
 	id: string;
 	title: string;
 	description: string;
-	subtask: Subtask[];
+	subtasks: Subtask[];
 	users: User[];
 }
 

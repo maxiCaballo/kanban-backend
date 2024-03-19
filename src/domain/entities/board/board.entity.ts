@@ -4,9 +4,9 @@ export class BoardEntity implements Board {
 	constructor(
 		public id: string,
 		public name: string,
-		public column: Column[],
+		public columns: Column[],
 		public shared: boolean,
-		public user: User[],
+		public users: User[],
 		public admin: User,
 	) {}
 }
