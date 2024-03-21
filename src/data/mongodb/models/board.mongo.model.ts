@@ -1,7 +1,5 @@
+import { CustomError } from '@/domain';
 import { Schema, model } from 'mongoose';
-
-//Todo: validar que al insertar usuarios al tablero y a las tareas no exista previamente, hacerlo con un "pre save".
-//Todo: validar que al asignar un usuario a una tarea este se encuentre asignado al tablero
 
 const subtaskSchema = new Schema({
 	title: {
@@ -58,6 +56,7 @@ const boardSchema = new Schema({
 	},
 });
 
+//Configurations
 boardSchema.set('toJSON', {
 	virtuals: true,
 	versionKey: false, //Elimina la propiedad __v
@@ -66,5 +65,9 @@ boardSchema.set('toJSON', {
 boardSchema.virtual('shared').get(function () {
 	return this.users.length > 1;
 });
+
+//Middlewares
+//Todo: validar que al insertar usuarios al tablero y a las tareas no exista previamente, hacerlo con un "pre save".
+//Todo: validar que al asignar un usuario a una tarea este se encuentre asignado al tablero.
 
 export const BoardModel = model('Board', boardSchema);

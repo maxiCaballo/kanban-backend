@@ -33,6 +33,9 @@ export class CustomError {
 		return CustomError.create(500, message);
 	}
 	static handleError(error: unknown) {
+		console.log({
+			handleError: error,
+		});
 		if (error instanceof CustomError) {
 			return error;
 		}

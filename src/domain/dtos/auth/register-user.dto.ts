@@ -1,21 +1,27 @@
 import { object, string } from 'yup';
-import { CustomError } from '@/domain';
+import { CustomError, IRegisterUserDto } from '@/domain';
 import { YupAdapter } from '@/config';
 
-export class RegisterUserDto {
-	private constructor(public name: string, public lastName: string, public email: string, public password: string) {}
+export class RegisterUserDto implements IRegisterUserDto {
+	private constructor(
+		public name: string,
+		public lastname: string,
+		public email: string,
+		public password: string,
+		public boards: [] = [],
+	) {}
 
 	static create(data: { [key: string]: string }): { error?: CustomError; registerUserDto?: RegisterUserDto } {
-		const { name, email, password, lastName } = data;
+		const { name, email, password, lastname } = data;
 
 		const schema = object({
 			name: string().required('Name is required').min(1, 'Min length of 1').max(20, 'Max length of 20'),
-			lastName: string().required('Lastname is required').min(1, 'Min length of 1').max(20, 'Max length of 20'),
+			lastname: string().required('Lastname is required').min(1, 'Min length of 1').max(20, 'Max length of 20'),
 			email: string().required('Email is required').email('Email is not valid'),
 			password: string().required('Password is required'),
 		});
 
-		const { errors, externalError } = YupAdapter.ValidateYupSchema(schema, { name, lastName, email, password });
+		const { errors, externalError } = YupAdapter.ValidateYupSchema(schema, { name, lastname, email, password });
 
 		//Yup error
 		if (errors && errors.length >= 1) {
@@ -33,7 +39,7 @@ export class RegisterUserDto {
 		}
 
 		//Ok
-		const registerUserDto = new RegisterUserDto(name, lastName, email, password);
+		const registerUserDto = new RegisterUserDto(name, lastname, email, password);
 		return {
 			registerUserDto,
 		};

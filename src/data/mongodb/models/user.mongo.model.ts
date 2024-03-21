@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { BcryptAdapter } from '@/config';
 
 const userSchema = new Schema({
 	name: {
@@ -28,6 +29,16 @@ userSchema.set('toJSON', {
 		delete ret._id;
 		delete ret.password;
 	},
+});
+
+//Middlewares
+userSchema.pre('save', async function (next) {
+	let user = this;
+
+	if (!user.isModified('password')) return next();
+
+	user.password = BcryptAdapter.hash(user.password);
+	next();
 });
 
 export const UserModel = model('User', userSchema);

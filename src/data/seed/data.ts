@@ -1,7 +1,7 @@
 import { BcryptAdapter } from '@/config';
-//todo: propiedad users: Users[] en tasks.
-//todo: propiedad users: Users[] en Board.
-//todo: propiedad admin: Users en Board.
+//propiedad users: Users[] en tasks.
+//propiedad users: Users[] en Board.
+//propiedad admin: Users en Board.
 
 export const seedData = {
 	users: [
@@ -11,6 +11,7 @@ export const seedData = {
 			lastname: 'lastName 1',
 			email: 'test1@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1ed5',
@@ -18,6 +19,7 @@ export const seedData = {
 			lastname: 'lastName 2',
 			email: 'test2@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1ed6',
@@ -25,6 +27,7 @@ export const seedData = {
 			lastname: 'lastName 3',
 			email: 'test3@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1ed7',
@@ -32,6 +35,7 @@ export const seedData = {
 			lastname: 'lastName 4',
 			email: 'test4@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1ed8',
@@ -39,6 +43,7 @@ export const seedData = {
 			lastname: 'lastName 5',
 			email: 'test5@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1ed9',
@@ -46,6 +51,7 @@ export const seedData = {
 			lastname: 'lastName 6',
 			email: 'test6@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [{ _id: '65fba8a36ac699c0be9ffcd3' }],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1eda',
@@ -53,6 +59,7 @@ export const seedData = {
 			lastname: 'lastName 7',
 			email: 'test7@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1edb',
@@ -60,6 +67,7 @@ export const seedData = {
 			lastname: 'lastName 8',
 			email: 'test8@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1edc',
@@ -67,6 +75,7 @@ export const seedData = {
 			lastname: 'lastName 9',
 			email: 'test9@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [],
 		},
 		{
 			_id: '65fb34bafd3f5c84bc4b1edd',
@@ -74,10 +83,12 @@ export const seedData = {
 			lastname: 'lastName10',
 			email: 'test10@google.com',
 			password: BcryptAdapter.hash('123456'),
+			boards: [],
 		},
 	],
 	boards: [
 		{
+			_id: '65fba8a36ac699c0be9ffcd3',
 			name: 'Platform Launch',
 			columns: [
 				{
@@ -319,7 +330,7 @@ export const seedData = {
 									isCompleted: true,
 								},
 							],
-							users: [{ _id: '65fb34bafd3f5c84bc4b1ed3' }],
+							users: [{ _id: '65fb34bafd3f5c84bc4b1ed6' }],
 							status: 'Done',
 						},
 						{
@@ -404,6 +415,19 @@ export const seedData = {
 		},
 	],
 };
+
+function seeAllUsersInBoard() {
+	const { users, columns, admin } = seedData.boards[0];
+	const boardTasks = columns.map(({ tasks }) => tasks).flat();
+	const boardUsers = [
+		...new Set(
+			boardTasks
+				.map(({ users }) => users)
+				.flat()
+				.map(({ _id }) => _id),
+		),
+	].sort();
+}
 
 const otherBoards = [
 	{

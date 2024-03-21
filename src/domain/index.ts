@@ -4,6 +4,7 @@ export * from '@/domain/entities/board/board.entity';
 export * from '@/domain/entities/interfaces';
 //Dtos
 export * from '@/domain/dtos/auth/register-user.dto';
+export * from '@/domain/dtos/interfaces';
 //Datasources
 export * from '@/domain/datasource/auth.datasource';
 //Repositories
