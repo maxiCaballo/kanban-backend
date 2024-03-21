@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { AuthController } from './controller';
-import { AuthRepositoryImpl, AuthDatasourceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthDatasourceMongoImpl } from '@/infrastructure';
 
 export class AuthRoutes {
 	static get routes(): Router {
 		const router = Router();
-		const authDatasource = new AuthDatasourceImpl();
-		const authRepository = new AuthRepositoryImpl(authDatasource);
+		const authMongoDatasource = new AuthDatasourceMongoImpl();
+		const authRepository = new AuthRepositoryImpl(authMongoDatasource);
 		const authController = new AuthController(authRepository);
 
 		router.post('/login', authController.loginUser);
