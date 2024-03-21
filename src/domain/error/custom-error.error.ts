@@ -5,6 +5,15 @@ export class CustomError {
 		public readonly ok: false = false,
 	) {}
 
+	//Instance methods
+	public formatError() {
+		const { ok, statusCode, message } = this;
+		return {
+			ok,
+			statusCode,
+			message,
+		};
+	}
 	//Class methods
 	static create(statusCode: number, message: string | string[]): CustomError {
 		const customError = new CustomError(statusCode, message);
@@ -31,9 +40,9 @@ export class CustomError {
 		});
 
 		if (error instanceof CustomError) {
-			return error;
+			return error.formatError();
 		}
 
-		return CustomError.internalServer();
+		return CustomError.internalServer().formatError();
 	}
 }

@@ -1,10 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config';
 
+export type Payload = {
+	id: string;
+};
+
 const JWT_SECRET_KEY = envs.JWT_SECRET_KEY;
 
 export class JwtAdapter {
-	static generateToken(payload: any, duration: string = '2h'): Promise<string | null> {
+	static generateToken(payload: Payload, duration: string = '2h') {
 		return new Promise((resolve) => {
 			jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: duration }, (err, token) => {
 				if (err) return resolve(null);

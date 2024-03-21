@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { AuthController } from './controller';
+import { AuthController } from '@/presentation';
 import { AuthRepositoryImpl, AuthDatasourceMongoImpl } from '@/infrastructure';
 
 export class AuthRoutes {
