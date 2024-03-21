@@ -3,5 +3,4 @@ export interface IRegisterUserDto {
 	lastname: string;
 	email: string;
 	password: string;
-	boards: [];
 }

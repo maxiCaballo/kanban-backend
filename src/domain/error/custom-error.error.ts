@@ -1,5 +1,3 @@
-import { Response } from 'express';
-
 export class CustomError {
 	private constructor(
 		public readonly statusCode: number,
@@ -10,12 +8,7 @@ export class CustomError {
 	//Class methods
 	static create(statusCode: number, message: string | string[]): CustomError {
 		const customError = new CustomError(statusCode, message);
-
-		return {
-			ok: customError.ok,
-			statusCode: customError.statusCode,
-			message: customError.message,
-		};
+		return customError;
 	}
 	static badRequest(message: string | string[] = 'Bad request'): CustomError {
 		return CustomError.create(400, message);
@@ -36,6 +29,7 @@ export class CustomError {
 		console.log({
 			handleError: error,
 		});
+
 		if (error instanceof CustomError) {
 			return error;
 		}

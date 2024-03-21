@@ -3,14 +3,14 @@ import { UserModel } from '@/data';
 
 export class AuthDatasourceMongoImpl implements AuthDatasource {
 	async register(registerUserDto: RegisterUserDto): Promise<User> {
-		const { name, email, password, lastname, boards } = registerUserDto;
+		const { name, email, password, lastname } = registerUserDto;
 
 		try {
 			//1. Verify if user exist
 			const exist = await UserModel.findOne({ email });
 
 			if (exist) {
-				//? Seria convieniente arrojar un error mas generico,por tema de seguridad
+				//? It would be convenient to display a more generic error, for security reasons.
 				throw CustomError.badRequest('User alredy exist');
 			}
 			//2.Create new user and hash password(pre save mongo middleware),
@@ -20,8 +20,9 @@ export class AuthDatasourceMongoImpl implements AuthDatasource {
 				email,
 				password,
 			});
+
 			//3. Create entity
-			return new UserEntity(newUser.id, email, name, lastname, password, boards);
+			return UserEntity.fromObject(newUser);
 		} catch (error) {
 			throw error;
 		}

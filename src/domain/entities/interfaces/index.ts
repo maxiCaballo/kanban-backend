@@ -1,8 +1,10 @@
+import { type ObjectId } from 'mongoose';
+
 export interface User {
 	id: string;
 	email: string;
 	name: string;
-	lastName: string;
+	lastname: string;
 	password: string;
 	boards: string[];
 }
@@ -12,8 +14,8 @@ export interface Board {
 	name: string;
 	columns: Column[];
 	shared: boolean;
-	users: User[];
-	admin: User;
+	users: string[];
+	admin: string;
 }
 
 export interface Column {
@@ -27,7 +29,7 @@ export interface Task {
 	title: string;
 	description: string;
 	subtasks: Subtask[];
-	users: User[];
+	users: string[];
 }
 
 export interface Subtask {

@@ -3,13 +3,7 @@ import { CustomError, IRegisterUserDto } from '@/domain';
 import { YupAdapter } from '@/config';
 
 export class RegisterUserDto implements IRegisterUserDto {
-	private constructor(
-		public name: string,
-		public lastname: string,
-		public email: string,
-		public password: string,
-		public boards: [] = [],
-	) {}
+	private constructor(public name: string, public lastname: string, public email: string, public password: string) {}
 
 	static create(data: { [key: string]: string }): { error?: CustomError; registerUserDto?: RegisterUserDto } {
 		const { name, email, password, lastname } = data;
