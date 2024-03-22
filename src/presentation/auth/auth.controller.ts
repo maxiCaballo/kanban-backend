@@ -1,12 +1,27 @@
 import { Request, Response } from 'express';
-import { RegisterUserDto, AuthRepository, CustomError, RegisterUser } from '@/domain';
-import { JwtAdapter } from '@/config';
+import { RegisterUserDto, AuthRepository, CustomError, RegisterUser, LoginDto, Login } from '@/domain';
 
 export class AuthController {
 	constructor(private readonly authRepository: AuthRepository) {}
 
 	loginUser = async (req: Request, res: Response) => {
-		res.json('login user controller');
+		const { error, loginDto } = LoginDto.create(req.body);
+
+		//Client error
+		if (error) {
+			const customError = error.formatError();
+			return res.status(customError.statusCode).json(customError);
+		}
+
+		const loginUser = new Login(this.authRepository); //Use case;
+
+		loginUser
+			.execute(loginDto!)
+			.then((userInfo) => res.status(200).json(userInfo))
+			.catch((error) => {
+				const customError = CustomError.handleError(error);
+				return res.status(customError.statusCode).json(customError);
+			});
 	};
 
 	registerUser = async (req: Request, res: Response) => {
@@ -14,7 +29,8 @@ export class AuthController {
 
 		//Client error
 		if (error) {
-			res.status(error.statusCode).json(error);
+			const customError = error.formatError();
+			return res.status(customError.statusCode).json(customError);
 		}
 
 		const registerUser = new RegisterUser(this.authRepository); //Use case
@@ -24,7 +40,7 @@ export class AuthController {
 			.then((userInfo) => res.status(201).json(userInfo))
 			.catch((error) => {
 				const customError = CustomError.handleError(error);
-				res.status(customError.statusCode).json(customError);
+				return res.status(customError.statusCode).json(customError);
 			});
 	};
 }

@@ -15,12 +15,17 @@ export class RegisterUserDto implements IRegisterUserDto {
 			password: string().required('Password is required'),
 		});
 
-		const { errors, externalError } = YupAdapter.ValidateYupSchema(schema, { name, lastname, email, password });
+		const { errors: yupErrors, externalError } = YupAdapter.ValidateYupSchema(schema, {
+			name,
+			lastname,
+			email,
+			password,
+		});
 
 		//Yup error
-		if (errors && errors.length >= 1) {
+		if (yupErrors && yupErrors.length >= 1) {
 			return {
-				error: CustomError.badRequest(errors),
+				error: CustomError.badRequest(yupErrors),
 				registerUserDto: undefined,
 			};
 		}
@@ -33,7 +38,7 @@ export class RegisterUserDto implements IRegisterUserDto {
 		}
 
 		//Ok
-		const registerUserDto = new RegisterUserDto(name, lastname, email, password);
+		const registerUserDto = new RegisterUserDto(name, lastname, email, String(password));
 		return {
 			registerUserDto,
 		};

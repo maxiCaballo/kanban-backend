@@ -1,22 +1,22 @@
-import { JwtAdapter } from '@/config';
+import { JwtAdapter, Payload } from '@/config';
 import {
-	RegisterUserDto,
 	AuthRepository,
 	CustomError,
+	LoginDto,
 	SignToken,
-	IRegisterUserUseCase,
+	ILoginUseCase,
 	AuthResponseUseCase as Response,
 } from '@/domain';
 
-export class RegisterUser implements IRegisterUserUseCase {
+export class Login implements ILoginUseCase {
 	constructor(
 		private readonly authRepository: AuthRepository,
 		private readonly signToken: SignToken = JwtAdapter.generateToken,
 	) {}
 
-	async execute(registerUserDto: RegisterUserDto): Promise<Response> {
-		//Create user
-		const { id, email, name, lastname, boards } = await this.authRepository.register(registerUserDto); //User entity
+	async execute(loginDto: LoginDto): Promise<Response> {
+		//Check if user exist
+		const { id, email, name, lastname, boards } = await this.authRepository.login(loginDto); //User entity
 
 		//Generate token
 		const token = await this.signToken({ id }); //Default duration 2h

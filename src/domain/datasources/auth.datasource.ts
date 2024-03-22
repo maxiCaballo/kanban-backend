@@ -1,6 +1,6 @@
-import { User, RegisterUserDto, LoginDto } from '@/domain';
+import { LoginDto, User, RegisterUserDto } from '@/domain';
 
-export abstract class AuthRepository {
+export abstract class AuthDatasource {
 	abstract register(registerUserDto: RegisterUserDto): Promise<User>;
 	abstract login(loginDto: LoginDto): Promise<User>;
 }
