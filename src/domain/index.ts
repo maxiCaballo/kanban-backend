@@ -11,3 +11,5 @@ export * from '@/domain/datasource/auth.datasource';
 export * from '@/domain/repositories/auth.repository';
 //Error
 export * from '@/domain/error/custom-error.error';
+//Use cases
+export * from '@/domain/use-cases/auth/register-user.use-case';

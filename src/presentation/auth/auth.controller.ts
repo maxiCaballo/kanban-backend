@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { RegisterUserDto, AuthRepository, CustomError } from '@/domain';
+import { RegisterUserDto, AuthRepository, CustomError, RegisterUser } from '@/domain';
 import { JwtAdapter } from '@/config';
 
 export class AuthController {
@@ -17,16 +17,11 @@ export class AuthController {
 			res.status(error.statusCode).json(error);
 		}
 
-		this.authRepository
-			.register(registerUserDto!)
-			.then(async (user) =>
-				res.status(201).json({
-					user,
-					token: await JwtAdapter.generateToken({
-						id: user.id,
-					}),
-				}),
-			)
+		const registerUser = new RegisterUser(this.authRepository); //Use case
+
+		registerUser
+			.execute(registerUserDto!)
+			.then((userInfo) => res.status(201).json(userInfo))
 			.catch((error) => {
 				const customError = CustomError.handleError(error);
 				res.status(customError.statusCode).json(customError);

@@ -8,7 +8,7 @@ export type Payload = {
 const JWT_SECRET_KEY = envs.JWT_SECRET_KEY;
 
 export class JwtAdapter {
-	static generateToken(payload: Payload, duration: string = '2h') {
+	static generateToken(payload: Payload, duration: string = '2h'): Promise<string | null> {
 		return new Promise((resolve) => {
 			jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: duration }, (err, token) => {
 				if (err) return resolve(null);
