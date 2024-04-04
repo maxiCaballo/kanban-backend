@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
+import { Server as IoServer } from 'socket.io';
+import { SocketServer } from '@/presentation/socketServer';
 import http from 'http';
-import { Server as IoServer, Socket } from 'socket.io';
 import path from 'path';
 import cors from 'cors';
-import { SocketServer } from '@/presentation/socketServer';
 
 interface Options {
 	port: number;

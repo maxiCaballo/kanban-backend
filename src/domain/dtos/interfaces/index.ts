@@ -8,3 +8,8 @@ export interface ILoginDto {
 	email: string;
 	password: string;
 }
+
+export interface IBoardDto {
+	name: string;
+	admin: string;
+}

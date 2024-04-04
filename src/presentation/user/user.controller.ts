@@ -15,4 +15,5 @@ export class UserController {
 			)
 			.catch((error) => error);
 	};
+	getUser = async (req: Request, res: Response) => {};
 }

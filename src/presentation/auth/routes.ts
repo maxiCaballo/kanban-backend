@@ -10,7 +10,7 @@ export class AuthRoutes {
 		const authController = new AuthController(authRepository);
 
 		router.post('/login', authController.loginUser);
-		router.post('/register', authController.registerUser);
+		router.post('/', authController.registerUser);
 
 		return router;
 	}

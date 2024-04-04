@@ -10,7 +10,7 @@ export class AuthController {
 		//Client error
 		if (error) {
 			const customError = error.formatError();
-			return res.status(customError.statusCode).json(customError);
+			return res.status(customError.statusCode).json(error);
 		}
 
 		const loginUser = new Login(this.authRepository); //Use case;

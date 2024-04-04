@@ -7,6 +7,7 @@ export class UserRoutes {
 		const userController = new UserController();
 
 		router.get('/', userController.getUsers);
+		router.get('/:id', userController.getUsers);
 
 		return router;
 	}
