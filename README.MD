@@ -15,6 +15,12 @@
   docker-compose up -d
 ```
 
+- Populate Database
+
+```bash
+ yarn populate-mongo-db
+```
+
 - Ejecutar proyecto en modo desarrollo
 
 ```bash

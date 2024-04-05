@@ -12,7 +12,7 @@ interface CreateParams {
 export class RegisterBoardDto implements IBoardDto {
 	private constructor(public name: string, public admin: string) {}
 
-	static create(data: CreateParams): { error?: CustomError; registerUserDto?: RegisterBoardDto } {
+	static create(data: CreateParams): { error?: CustomError; registerBoardDto?: RegisterBoardDto } {
 		const {
 			name,
 			tokenPayload: { id: loggedUserId },
@@ -47,21 +47,21 @@ export class RegisterBoardDto implements IBoardDto {
 		if (yupErrors && yupErrors.length >= 1) {
 			return {
 				error: CustomError.badRequest(yupErrors),
-				registerUserDto: undefined,
+				registerBoardDto: undefined,
 			};
 		}
 		//External error
 		if (externalError) {
 			return {
 				error: CustomError.internalServer(),
-				registerUserDto: undefined,
+				registerBoardDto: undefined,
 			};
 		}
 
 		//Ok
-		const registerUserDto = new RegisterBoardDto(name as string, admin as string);
+		const registerBoardDto = new RegisterBoardDto(name as string, admin as string);
 		return {
-			registerUserDto,
+			registerBoardDto,
 		};
 	}
 }

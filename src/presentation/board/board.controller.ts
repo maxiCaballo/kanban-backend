@@ -1,20 +1,22 @@
 import { Request, Response } from 'express';
-import { RegisterBoardDto, CustomError, BoardRepository } from '@/domain';
+import { RegisterBoardDto, CustomError, BoardRepository, RegisterBoardUseCase } from '@/domain';
 
 export class BoardController {
 	constructor(private readonly boardRepository: BoardRepository) {}
 
 	registerBoard = async (req: Request, res: Response) => {
-		const { error, registerUserDto } = RegisterBoardDto.create(req.body);
+		const { error, registerBoardDto } = RegisterBoardDto.create(req.body);
 
 		if (error) {
 			const customError = CustomError.handleError(error);
 			return res.status(customError.statusCode).json(customError);
 		}
 
+		const createBoard = new RegisterBoardUseCase(this.boardRepository);
+
 		//Use case
-		this.boardRepository
-			.create(registerUserDto!)
+		createBoard
+			.execute(registerBoardDto!)
 			.then((boardEntity) => res.status(201).json(boardEntity))
 			.catch((error) => {
 				const customError = CustomError.handleError(error);
