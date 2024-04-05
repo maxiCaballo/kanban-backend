@@ -9,8 +9,10 @@ export * from '@/domain/dtos/board/register-board.dto';
 export * from '@/domain/dtos/interfaces';
 //Datasources
 export * from '@/domain/datasources/auth.datasource';
+export * from '@/domain/datasources/board.datasource';
 //Repositories
 export * from '@/domain/repositories/auth.repository';
+export * from '@/domain/repositories/board.repository';
 //Error
 export * from '@/domain/error/custom-error.error';
 //Use cases

@@ -1,7 +1,7 @@
-import { CustomError } from '@/domain';
 import { Schema, model } from 'mongoose';
+import { SubtaskSchema, TaskSchema, ColumnSchema, BoardSchema, UserModel } from '@/data';
 
-const subtaskSchema = new Schema({
+const subtaskSchema = new Schema<SubtaskSchema>({
 	title: {
 		type: String,
 		required: [true, 'Subtask name is required'],
@@ -12,7 +12,7 @@ const subtaskSchema = new Schema({
 	},
 });
 
-const taskSchema = new Schema(
+const taskSchema = new Schema<TaskSchema>(
 	{
 		title: {
 			type: String,
@@ -29,7 +29,7 @@ const taskSchema = new Schema(
 	{ timestamps: true },
 );
 
-const columnSchema = new Schema({
+const columnSchema = new Schema<ColumnSchema>({
 	name: {
 		type: String,
 		required: [true, 'Column name is required'],
@@ -37,7 +37,7 @@ const columnSchema = new Schema({
 	tasks: [taskSchema],
 });
 
-const boardSchema = new Schema({
+const boardSchema = new Schema<BoardSchema>({
 	name: {
 		type: String,
 		required: [true, 'Name is required'],
@@ -69,5 +69,12 @@ boardSchema.virtual('shared').get(function () {
 //Middlewares
 //Todo: validar que al insertar usuarios al tablero y a las tareas no exista previamente, hacerlo con un "pre save".
 //Todo: validar que al asignar un usuario a una tarea este se encuentre asignado al tablero.
+//Todo: validar que al borrar un tablero tambien se borre ese tablero del usuario con el post('delete')
+
+//After the board is created I save that board in the user, the $addToSet guarantees me that that board does not exist.
+//If it exists it does nothing and if it does not exist it adds it.
+boardSchema.post('save', async function (doc) {
+	await UserModel.updateOne({ _id: doc.admin }, { $addToSet: { boards: doc._id } });
+});
 
 export const BoardModel = model('Board', boardSchema);

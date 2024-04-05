@@ -33,7 +33,8 @@ export class AuthController {
 			return res.status(customError.statusCode).json(customError);
 		}
 
-		const registerUser = new RegisterUser(this.authRepository); //Use case
+		//Use case
+		const registerUser = new RegisterUser(this.authRepository);
 
 		registerUser
 			.execute(registerUserDto!)

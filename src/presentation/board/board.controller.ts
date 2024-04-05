@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { RegisterBoardDto, CustomError } from '@/domain';
+import { RegisterBoardDto, CustomError, BoardRepository } from '@/domain';
 
 export class BoardController {
-	constructor(/*private readonly boardRepository: BoardRepository*/) {}
+	constructor(private readonly boardRepository: BoardRepository) {}
 
 	registerBoard = async (req: Request, res: Response) => {
 		const { error, registerUserDto } = RegisterBoardDto.create(req.body);
@@ -12,6 +12,13 @@ export class BoardController {
 			return res.status(customError.statusCode).json(customError);
 		}
 
-		res.status(201).json(registerUserDto);
+		//Use case
+		this.boardRepository
+			.create(registerUserDto!)
+			.then((boardEntity) => res.status(201).json(boardEntity))
+			.catch((error) => {
+				const customError = CustomError.handleError(error);
+				return res.status(customError.statusCode).json(customError);
+			});
 	};
 }

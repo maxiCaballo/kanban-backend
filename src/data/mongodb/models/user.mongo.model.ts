@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { BcryptAdapter } from '@/config';
+import { UserSchema } from '@/data';
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserSchema>({
 	name: {
 		type: String,
 		required: [true, 'Name is required'],

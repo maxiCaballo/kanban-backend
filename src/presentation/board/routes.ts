@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { BoardController } from '@/presentation';
-import { AuthRepositoryImpl, AuthDatasourceMongoImpl } from '@/infrastructure';
+import { BoardDatasourceMongoImpl, BoardRepositoryImpl } from '@/infrastructure';
 
 export class BoardRoutes {
 	static get routes(): Router {
 		const router = Router();
-		// const authMongoDatasource = new AuthDatasourceMongoImpl();
-		// const authRepository = new AuthRepositoryImpl(authMongoDatasource);
-		const boardController = new BoardController();
+		const boardMongoDatasource = new BoardDatasourceMongoImpl();
+		const boardRepository = new BoardRepositoryImpl(boardMongoDatasource);
+		const boardController = new BoardController(boardRepository);
 
 		router.post('/', boardController.registerBoard);
 
