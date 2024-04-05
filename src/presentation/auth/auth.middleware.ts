@@ -7,6 +7,8 @@ export class JwtMiddleware {
 		const authorization = req.header('Authorization'); //'Authorization: Bearer hola'
 
 		if (!authorization || !authorization.startsWith('Bearer')) {
+			console.log('entre aca');
+
 			const customError = CustomError.unAuthorized().formatError();
 			return res.status(customError.statusCode).json(customError);
 		}

@@ -10,6 +10,7 @@ export class BoardRoutes {
 		const boardController = new BoardController(boardRepository);
 
 		router.post('/', boardController.registerBoard);
+		router.delete('/:id', boardController.deleteBoard);
 
 		return router;
 	}

@@ -1,5 +1,5 @@
 import { object, string } from 'yup';
-import { CustomError, IBoardDto } from '@/domain';
+import { CustomError, IRegisterBoardDto } from '@/domain';
 import { YupAdapter } from '@/config';
 import { Payload } from '@/config';
 
@@ -9,7 +9,7 @@ interface CreateParams {
 	[key: string]: string | TokenPayload;
 }
 
-export class RegisterBoardDto implements IBoardDto {
+export class RegisterBoardDto implements IRegisterBoardDto {
 	private constructor(public name: string, public admin: string) {}
 
 	static create(data: CreateParams): { error?: CustomError; registerBoardDto?: RegisterBoardDto } {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { RegisterUserDto, AuthRepository, CustomError, RegisterUser, LoginDto, Login } from '@/domain';
+import { RegisterUserDto, AuthRepository, RegisterUser, LoginDto, Login } from '@/domain';
+import { controllerErrorResponse, controllerSuccessResponse } from '@/presentation';
 
 export class AuthController {
 	constructor(private readonly authRepository: AuthRepository) {}
@@ -9,19 +10,16 @@ export class AuthController {
 
 		//Client error
 		if (error) {
-			const customError = error.formatError();
-			return res.status(customError.statusCode).json(customError);
+			controllerErrorResponse(res, error);
+			return;
 		}
 
 		const loginUser = new Login(this.authRepository); //Use case;
 
 		loginUser
 			.execute(loginDto!)
-			.then((userInfo) => res.status(200).json(userInfo))
-			.catch((error) => {
-				const customError = CustomError.handleError(error);
-				return res.status(customError.statusCode).json(customError);
-			});
+			.then((userInfo) => controllerSuccessResponse(res, 200, userInfo))
+			.catch((error) => controllerErrorResponse(res, error));
 	};
 
 	registerUser = async (req: Request, res: Response) => {
@@ -29,8 +27,8 @@ export class AuthController {
 
 		//Client error
 		if (error) {
-			const customError = error.formatError();
-			return res.status(customError.statusCode).json(customError);
+			controllerErrorResponse(res, error);
+			return;
 		}
 
 		//Use case
@@ -38,10 +36,7 @@ export class AuthController {
 
 		registerUser
 			.execute(registerUserDto!)
-			.then((userInfo) => res.status(201).json(userInfo))
-			.catch((error) => {
-				const customError = CustomError.handleError(error);
-				return res.status(customError.statusCode).json(customError);
-			});
+			.then((userInfo) => controllerSuccessResponse(res, 201, userInfo))
+			.catch((error) => controllerErrorResponse(res, error));
 	};
 }
