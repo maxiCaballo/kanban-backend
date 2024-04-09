@@ -1,5 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { SubtaskSchema, TaskSchema, ColumnSchema, BoardSchema, UserModel } from '@/data';
+import {
+	SubtaskSchema,
+	TaskSchema,
+	ColumnSchema,
+	BoardSchema,
+	UserModel,
+	BoardStaticMethods,
+	BoardInstanceMethods,
+} from '@/data';
 
 const subtaskSchema = new Schema<SubtaskSchema>({
 	title: {
@@ -28,7 +36,6 @@ const taskSchema = new Schema<TaskSchema>(
 	},
 	{ timestamps: true },
 );
-
 const columnSchema = new Schema<ColumnSchema>({
 	name: {
 		type: String,
@@ -37,7 +44,7 @@ const columnSchema = new Schema<ColumnSchema>({
 	tasks: [taskSchema],
 });
 
-const boardSchema = new Schema<BoardSchema>({
+const boardSchema = new Schema<BoardSchema, BoardStaticMethods, BoardInstanceMethods>({
 	name: {
 		type: String,
 		required: [true, 'Name is required'],
@@ -69,12 +76,14 @@ boardSchema.virtual('shared').get(function () {
 //Middlewares
 //Todo: validar que al insertar usuarios al tablero y a las tareas no exista previamente, hacerlo con un "pre save".
 //Todo: validar que al asignar un usuario a una tarea este se encuentre asignado al tablero.
-//Todo: validar que al borrar un tablero tambien se borre ese tablero del usuario con el post('delete')
 
 //After the board is created I save that board in the user, the $addToSet guarantees me that that board does not exist.
 //If it exists it does nothing and if it does not exist it adds it.
 boardSchema.post('save', async function (doc) {
 	await UserModel.updateOne({ _id: doc.admin }, { $addToSet: { boards: doc._id } });
 });
+boardSchema.post('findOneAndDelete', async function (doc) {
+	await UserModel.updateOne({ _id: doc.admin }, { $pull: { boards: doc._id } });
+});
 
-export const BoardModel = model('Board', boardSchema);
+export const BoardModel = model<BoardSchema, BoardStaticMethods>('Board', boardSchema);

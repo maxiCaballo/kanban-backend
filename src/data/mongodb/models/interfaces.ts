@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { HydratedDocument, Model, Types } from 'mongoose';
 import { User, Board } from '@/domain';
 
 //*Board
@@ -24,6 +24,13 @@ export interface BoardSchema {
 	columns: Types.DocumentArray<ColumnSchema>;
 	users: Types.ObjectId[] | User[];
 	admin: Types.ObjectId | User;
+}
+
+//Instance methods
+export interface BoardInstanceMethods {}
+//Static methods
+export interface BoardStaticMethods extends Model<BoardSchema, {}, BoardInstanceMethods> {
+	// getAdmin(boardId: string): Promise<HydratedDocument<BoardSchema, BoardInstanceMethods>>;
 }
 
 //*User

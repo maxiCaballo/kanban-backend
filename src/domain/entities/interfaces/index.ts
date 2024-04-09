@@ -30,6 +30,7 @@ export interface Task {
 	description: string;
 	subtasks: Subtask[];
 	users: string[];
+	status: string;
 }
 
 export interface Subtask {

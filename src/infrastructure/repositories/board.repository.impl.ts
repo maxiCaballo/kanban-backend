@@ -9,4 +9,7 @@ export class BoardRepositoryImpl implements BoardRepository {
 	delete(deleteBoardDto: DeleteBoardDto): Promise<Board> {
 		return this.boardDatasource.delete(deleteBoardDto);
 	}
+	getBoard(boardId: string | number): Promise<Board> {
+		return this.boardDatasource.getBoard(boardId);
+	}
 }

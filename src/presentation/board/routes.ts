@@ -11,6 +11,8 @@ export class BoardRoutes {
 
 		router.post('/', boardController.registerBoard);
 		router.delete('/:id', boardController.deleteBoard);
+		router.get('/:id', boardController.getBoard); //Get one user board
+		router.get('/:userId', boardController.getBoards); //Get all user board
 
 		return router;
 	}

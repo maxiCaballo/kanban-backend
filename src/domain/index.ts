@@ -1,6 +1,9 @@
 //Entities
 export * from '@/domain/entities/user/user.entity';
 export * from '@/domain/entities/board/board.entity';
+export * from '@/domain/entities/column/column.entity';
+export * from '@/domain/entities/task/task.entity';
+export * from '@/domain/entities/subtask/subtask.entity';
 export * from '@/domain/entities/interfaces';
 //Dtos
 export * from '@/domain/dtos/auth/register-user.dto';
@@ -22,4 +25,5 @@ export * from '@/domain/use-cases/auth/login.use-case';
 export * from '@/domain/use-cases/auth/interfaces';
 export * from '@/domain/use-cases/board/register-board.use-case';
 export * from '@/domain/use-cases/board/delete-board.use-case';
+export * from '@/domain/use-cases/board/get-board.use-case';
 export * from '@/domain/use-cases/board/interfaces';

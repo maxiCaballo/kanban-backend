@@ -1,4 +1,4 @@
-import { Board, Column } from '@/domain';
+import { Board, Column, Task, Subtask, ColumnEntity } from '@/domain';
 
 export class BoardEntity implements Board {
 	constructor(
@@ -18,6 +18,24 @@ export class BoardEntity implements Board {
 		if (!name) throw new Error('UserEntity.fromObject() => Missing board name');
 		if (!admin) throw new Error('UserEntity.fromObject() => Missing admin id');
 
-		return new BoardEntity(id || _id, name, columns, shared, users, admin);
+		let columnsEntity: Column[] = [];
+		if (columns.length > 0) {
+			columns.forEach((column: any) => {
+				const columnEntity = ColumnEntity.fromObject(column);
+				columnsEntity.push(columnEntity);
+			});
+		}
+
+		return new BoardEntity(id || _id, name, columnsEntity, shared, users, String(admin));
+	}
+
+	static isMemberOrAdminByUserId(board: BoardEntity, userId: string | number): { isAdmin: boolean; isMember: boolean } {
+		const isMember = Boolean(board.users.find((user) => user === userId));
+		const isAdmin = board.admin === userId;
+
+		return {
+			isAdmin,
+			isMember,
+		};
 	}
 }
