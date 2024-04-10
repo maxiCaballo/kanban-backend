@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { connect, disconnect, Types } from 'mongoose';
 
 interface Options {
 	mongoUrl: string;
@@ -10,7 +10,7 @@ export class MongoDb {
 		const { mongoUrl, dbName } = options;
 
 		try {
-			await mongoose.connect(mongoUrl, {
+			await connect(mongoUrl, {
 				dbName,
 			});
 			console.log('Mongo connected');
@@ -22,6 +22,10 @@ export class MongoDb {
 		}
 	}
 	static async disconnect() {
-		await mongoose.disconnect();
+		await disconnect();
+	}
+
+	static isValidMongoId(id: any) {
+		return Types.ObjectId.isValid(id);
 	}
 }

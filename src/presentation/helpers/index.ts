@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { CustomError, AuthResponseUseCase as AuthResponse, BoardResponse } from '@/domain';
+import { CustomError, AuthResponseUseCase as AuthResponse, BoardResponse, BoardsResponse } from '@/domain';
 
-type ControllerResponse = AuthResponse | BoardResponse;
+type ControllerResponse = AuthResponse | BoardResponse | BoardsResponse;
 
 export const controllerErrorResponse = (res: Response, error: CustomError | any) => {
 	if (!error) return;

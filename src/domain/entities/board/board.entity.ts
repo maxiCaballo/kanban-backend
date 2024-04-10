@@ -14,9 +14,9 @@ export class BoardEntity implements Board {
 	static fromObject(object: { [key: string]: any }) {
 		const { id, _id, name, columns = [], shared = false, users = [], admin } = object;
 
-		if (!id || !_id) throw new Error('UserEntity.fromObject() => Missing id || _id');
-		if (!name) throw new Error('UserEntity.fromObject() => Missing board name');
-		if (!admin) throw new Error('UserEntity.fromObject() => Missing admin id');
+		if (!id || !_id) throw new Error('BoardEntity.fromObject() => Missing id || _id');
+		if (!name) throw new Error('BoardEntity.fromObject() => Missing board name');
+		if (!admin) throw new Error('BoardEntity.fromObject() => Missing admin id');
 
 		let columnsEntity: Column[] = [];
 		if (columns.length > 0) {

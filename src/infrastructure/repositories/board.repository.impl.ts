@@ -12,4 +12,7 @@ export class BoardRepositoryImpl implements BoardRepository {
 	getBoard(boardId: string | number): Promise<Board> {
 		return this.boardDatasource.getBoard(boardId);
 	}
+	getUserBoards(userId: string | number): Promise<Board[]> {
+		return this.boardDatasource.getUserBoards(userId);
+	}
 }

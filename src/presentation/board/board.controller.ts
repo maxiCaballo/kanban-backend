@@ -7,11 +7,12 @@ import {
 	DeleteBoardUseCase,
 	GetBoardUseCase,
 	CustomError,
+	GetUserBoards,
 } from '@/domain';
 import { controllerErrorResponse, controllerSuccessResponse } from '@/presentation';
 
-//TODO: CASO DE USO OBTENER TABLERO POR ID
 //TODO: CASO DE USO UPDATE BOARD
+//TODO: CASO DE USO OBTENER TABLEROS POR USERID
 
 export class BoardController {
 	constructor(private readonly boardRepository: BoardRepository) {}
@@ -52,7 +53,7 @@ export class BoardController {
 			.catch((error) => controllerErrorResponse(res, error));
 	};
 	getBoard = async (req: Request, res: Response) => {
-		const { id: boardId = false } = req.params;
+		const { id: boardId = null } = req.params;
 		const userId = req.body.tokenPayload.id;
 
 		//Client error
@@ -69,7 +70,21 @@ export class BoardController {
 			.then((board) => controllerSuccessResponse(res, 200, board))
 			.catch((error) => controllerErrorResponse(res, error));
 	};
-	getBoards = async (req: Request, res: Response) => {
-		const { userId } = req.params;
+	getUserBoards = async (req: Request, res: Response) => {
+		const loggedUser = req.body.tokenPayload.id;
+
+		//Client error
+		if (!loggedUser) {
+			const customError = CustomError.badRequest('Missing user id');
+			controllerErrorResponse(res, customError);
+			return;
+		}
+
+		const getBoards = new GetUserBoards(this.boardRepository);
+
+		getBoards
+			.execute(loggedUser)
+			.then((boards) => controllerSuccessResponse(res, 200, boards))
+			.catch((error) => controllerErrorResponse(res, error));
 	};
 }

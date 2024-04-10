@@ -10,7 +10,7 @@ export class AppRoutes {
 		router.use(JwtMiddleware.validate);
 
 		router.use('/api/users', UserRoutes.routes);
-		router.use('/api/board', BoardRoutes.routes);
+		router.use('/api/boards', BoardRoutes.routes);
 
 		return router;
 	}
