@@ -1,3 +1,5 @@
+export * from '@/presentation/routes';
+export * from '@/presentation/server';
 //Auth
 export * from '@/presentation/auth/auth.controller';
 export * from '@/presentation/auth/routes';
