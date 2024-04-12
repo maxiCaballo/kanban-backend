@@ -52,7 +52,7 @@ export class RegisterBoardDto implements IRegisterBoardDto {
 }
 
 /*
-	Personal verification 
+	Personal validation 
 	admin: string()
 				.required('Admin id is required')
 				.test('match', 'admin & tokenPayload.id must be the same', function (value) {

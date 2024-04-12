@@ -1,6 +1,4 @@
-import { CustomError } from '@/domain/error/custom-error.error';
-import { DeleteBoardDto } from '../board/delete-board.dto';
-
+import { Column } from '@/domain';
 //Auth
 export interface IRegisterUserDto {
 	name: string;
@@ -19,4 +17,12 @@ export interface IRegisterBoardDto {
 }
 export interface IDeleteBoardDto {
 	boardId: string | number;
+}
+export interface IUpdateBoard {
+	id: string | number;
+	name?: string;
+	columns?: Column[];
+	shared?: boolean;
+	users?: string[];
+	admin?: string;
 }
