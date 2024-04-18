@@ -13,6 +13,7 @@ export class BoardRoutes {
 		router.delete('/:id', boardController.deleteBoard);
 		router.get('/user', boardController.getUserBoards); //Get all user board
 		router.get('/:id', boardController.getBoard); //Get one user board
+		router.put('/', boardController.updateBoard); //Get one user board
 
 		return router;
 	}

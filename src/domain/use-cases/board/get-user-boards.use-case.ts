@@ -1,6 +1,6 @@
-import { Board, IGetUserBoards, BoardRepository, BoardsResponse, BoardEntity, CustomError } from '@/domain';
+import { Board, IGetUserBoardsUseCase, BoardRepository, BoardsResponse, BoardEntity, CustomError } from '@/domain';
 
-export class GetUserBoards implements IGetUserBoards {
+export class GetUserBoards implements IGetUserBoardsUseCase {
 	constructor(private readonly boardRepository: BoardRepository) {}
 
 	async execute(userId: string | number): Promise<BoardsResponse> {

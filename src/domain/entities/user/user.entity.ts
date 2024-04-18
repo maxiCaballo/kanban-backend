@@ -1,3 +1,4 @@
+import { MongoDb } from '@/data';
 import { User } from '@/domain';
 
 export class UserEntity implements User {
@@ -11,10 +12,21 @@ export class UserEntity implements User {
 	) {}
 
 	//Mapper
-	static fromObject(object: { [key: string]: any }) {
-		const { id, _id, name, email, lastname, password, boards = [] } = object;
+	static fromObject(
+		object: { [key: string]: any } | string[],
+		options?: {
+			returnUsersAsStringIds?: boolean;
+		},
+	) {
+		if (options?.returnUsersAsStringIds) {
+			if (MongoDb.isValidMongoId(object)) {
+				return MongoDb.fromObjectId(object as string[]);
+			}
+		}
 
-		if (!id || !_id) throw new Error('UserEntity.fromObject() => Missing id || _id');
+		const { id, _id, name, email, lastname, password, boards = [] } = object as { [key: string]: any };
+
+		if (!id && !_id) throw new Error('UserEntity.fromObject() => Missing id || _id');
 		if (!name) throw new Error('UserEntity.fromObject() => Missing name');
 		if (!email) throw new Error('UserEntity.fromObject() => Missing email');
 		if (!lastname) throw new Error('UserEntity.fromObject() => Missing lastname');

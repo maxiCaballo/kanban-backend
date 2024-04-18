@@ -7,17 +7,24 @@ export class ColumnEntity implements Column {
 	static fromObject(object: { [key: string]: any }) {
 		const { id, _id, name, tasks = [] } = object;
 
-		if (!id || !_id) throw new Error('ColumnEntity.fromObject() => Missing id || _id');
+		if (!id && !_id) throw new Error('ColumnEntity.fromObject() => Missing id || _id');
 		if (!name) throw new Error('ColumnEntity.fromObject() => Missing name');
 
 		let tasksEntity: Task[] = [];
+
 		if (tasks.length > 0) {
-			tasks.forEach((task: any) => {
-				const taskEntity = TaskEntity.fromObject(task);
-				tasksEntity.push(taskEntity);
-			});
+			tasksEntity = TaskEntity.fromArray(tasks);
 		}
 
 		return new ColumnEntity(id || _id, name, tasksEntity);
+	}
+
+	static fromArray(array: { [key: string]: any }[]): ColumnEntity[] {
+		try {
+			const columnsFromArray = array.map((column) => ColumnEntity.fromObject(column));
+			return columnsFromArray;
+		} catch (error) {
+			throw error;
+		}
 	}
 }

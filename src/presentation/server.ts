@@ -20,6 +20,8 @@ export class Server {
 	private readonly publicPath: string;
 	private readonly routes: Router;
 
+	private serverListener?: any;
+
 	constructor(options: Options) {
 		const { port, public_path = 'public', routes } = options;
 
@@ -52,8 +54,11 @@ export class Server {
 		//*Socket server
 		this.initSocketServer();
 
-		this.httpServer.listen(this.port, () => {
+		this.serverListener = this.httpServer.listen(this.port, () => {
 			console.log(`server running on port ${this.port}`);
 		});
+	}
+	public close() {
+		this.serverListener?.close();
 	}
 }

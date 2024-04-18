@@ -8,6 +8,8 @@ import {
 	GetBoardUseCase,
 	CustomError,
 	GetUserBoards,
+	UpdateBoardUseCase,
+	UpdateBoardDto,
 } from '@/domain';
 import { controllerErrorResponse, controllerSuccessResponse } from '@/presentation';
 
@@ -85,6 +87,31 @@ export class BoardController {
 		getBoards
 			.execute(loggedUser)
 			.then((boards) => controllerSuccessResponse(res, 200, boards))
+			.catch((error) => controllerErrorResponse(res, error));
+	};
+	updateBoard = async (req: Request, res: Response) => {
+		const loggedUser = req.body.tokenPayload.id;
+
+		//Client error
+		if (!loggedUser) {
+			const customError = CustomError.badRequest('Missing user id');
+			controllerErrorResponse(res, customError);
+			return;
+		}
+
+		const { error, updateBoardDto } = UpdateBoardDto.create(req.body);
+		//Client error
+		if (error) {
+			controllerErrorResponse(res, error);
+			return;
+		}
+
+		const updateBoard = new UpdateBoardUseCase(this.boardRepository);
+
+		//Use case
+		updateBoard
+			.execute(updateBoardDto as UpdateBoardDto, loggedUser)
+			.then((updatedBoard) => controllerSuccessResponse(res, 200, updatedBoard))
 			.catch((error) => controllerErrorResponse(res, error));
 	};
 }

@@ -24,7 +24,16 @@ export class MongoDb {
 		await disconnect();
 	}
 
-	static isValidMongoId(id: any) {
-		return Types.ObjectId.isValid(id);
+	static isValidMongoId(data: any | any[]) {
+		if (Array.isArray(data)) {
+			return data.every((element) => Types.ObjectId.isValid(element));
+		}
+		return Types.ObjectId.isValid(data);
+	}
+	static fromObjectId(data: string[] | string) {
+		if (!Array.isArray(data)) {
+			return String(data);
+		}
+		return data.map((element) => String(element));
 	}
 }

@@ -1,4 +1,5 @@
 import { Board, DeleteBoardDto, RegisterBoardDto } from '@/domain';
+import { UpdateBoardDto } from '../../../dtos/board/update-board.dto';
 
 export interface BoardResponse {
 	board: Board;
@@ -16,6 +17,9 @@ export interface IDeleteBoardUseCase {
 export interface IGetBoardUseCase {
 	execute(boardId: string | number, userId: string | number): Promise<BoardResponse>;
 }
-export interface IGetUserBoards {
+export interface IGetUserBoardsUseCase {
 	execute(userId: string | number): Promise<BoardsResponse>;
+}
+export interface IUpdateBoardUseCase {
+	execute(updateBoardDto: UpdateBoardDto, userId: string): Promise<BoardResponse>;
 }

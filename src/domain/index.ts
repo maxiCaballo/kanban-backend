@@ -28,4 +28,5 @@ export * from '@/domain/use-cases/board/register-board.use-case';
 export * from '@/domain/use-cases/board/delete-board.use-case';
 export * from '@/domain/use-cases/board/get-board.use-case';
 export * from '@/domain/use-cases/board/get-user-boards.use-case';
+export * from '@/domain/use-cases/board/update-board.use-case';
 export * from '@/domain/use-cases/board/interfaces';
