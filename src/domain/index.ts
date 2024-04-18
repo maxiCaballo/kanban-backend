@@ -11,6 +11,8 @@ export * from '@/domain/dtos/auth/login.dto';
 export * from '@/domain/dtos/board/register-board.dto';
 export * from '@/domain/dtos/board/delete-board.dto';
 export * from '@/domain/dtos/board/update-board.dto';
+export * from '@/domain/dtos/board/update-subtask.dto';
+export * from '@/domain/dtos/helpers';
 export * from '@/domain/dtos/interfaces';
 //Datasources
 export * from '@/domain/datasources/auth.datasource';

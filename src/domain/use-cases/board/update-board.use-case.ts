@@ -10,10 +10,10 @@ import {
 export class UpdateBoardUseCase implements IUpdateBoardUseCase {
 	constructor(private readonly boardRepository: BoardRepository) {}
 
-	async execute(updateBoardDto: UpdateBoardDto, userId: string): Promise<BoardResponse> {
+	async execute(updateBoardDto: UpdateBoardDto | Partial<UpdateBoardDto>, userId: string): Promise<BoardResponse> {
 		const { id } = updateBoardDto;
 		try {
-			const board = await this.boardRepository.getBoard(id);
+			const board = await this.boardRepository.getBoard(id!);
 			const { isAdmin, isMember } = BoardEntity.isMemberOrAdminByUserId(board, userId);
 
 			if (!isAdmin && !isMember) {

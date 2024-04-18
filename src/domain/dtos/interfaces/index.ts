@@ -18,11 +18,16 @@ export interface IRegisterBoardDto {
 export interface IDeleteBoardDto {
 	boardId: string | number;
 }
-export interface IUpdateBoard {
+export interface IUpdateBoardDto {
 	id: string | number;
 	name?: string;
 	columns?: Column[];
 	shared?: boolean;
 	users?: string[];
 	admin?: string;
+}
+export interface IUpdateSubtaskDto {
+	id: string | number;
+	isCompleted?: boolean;
+	title?: string;
 }

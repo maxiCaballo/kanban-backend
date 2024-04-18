@@ -15,7 +15,7 @@ export class BoardRepositoryImpl implements BoardRepository {
 	getUserBoards(userId: string | number): Promise<Board[]> {
 		return this.boardDatasource.getUserBoards(userId);
 	}
-	updateBoard(updateBoardDto: UpdateBoardDto): Promise<Board> {
+	updateBoard(updateBoardDto: UpdateBoardDto | Partial<UpdateBoardDto>): Promise<Board> {
 		return this.boardDatasource.updateBoard(updateBoardDto);
 	}
 }

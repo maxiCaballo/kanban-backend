@@ -1,6 +1,6 @@
-import { IUpdateBoard, Column, CustomError } from '@/domain';
+import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps } from '@/domain';
 
-export class UpdateBoardDto implements IUpdateBoard {
+export class UpdateBoardDto implements IUpdateBoardDto {
 	private constructor(
 		public id: string | number,
 		public name?: string,
@@ -38,25 +38,12 @@ export class UpdateBoardDto implements IUpdateBoard {
 
 		if (anyPropIsUndefined) {
 			return {
-				updateBoardDto: updateBoardDto.deleteUndefinedProps(),
+				updateBoardDto: deleteUndefinedProps<UpdateBoardDto>(updateBoardDto),
 			};
 		}
 
 		return {
 			updateBoardDto,
 		};
-	}
-
-	//Instance methods
-	private deleteUndefinedProps(): Partial<UpdateBoardDto> {
-		const partialUpdateBoardDto: Partial<UpdateBoardDto> = {};
-
-		for (const [key, value] of Object.entries(this)) {
-			if (value !== undefined) {
-				partialUpdateBoardDto[key as keyof UpdateBoardDto] = value;
-			}
-		}
-
-		return partialUpdateBoardDto;
 	}
 }
