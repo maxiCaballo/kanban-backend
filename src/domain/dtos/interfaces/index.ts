@@ -1,4 +1,4 @@
-import { Column } from '@/domain';
+import { Column, Subtask } from '@/domain';
 //Auth
 export interface IRegisterUserDto {
 	name: string;
@@ -27,7 +27,10 @@ export interface IUpdateBoardDto {
 	admin?: string;
 }
 export interface IUpdateSubtaskDto {
-	id: string | number;
-	isCompleted?: boolean;
-	title?: string;
+	boardId: string | number;
+	subtask: {
+		id: string | number;
+		title?: string;
+		isCompleted?: boolean;
+	};
 }
