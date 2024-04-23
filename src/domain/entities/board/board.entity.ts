@@ -1,4 +1,4 @@
-import { Board, Column, ColumnEntity, UserEntity } from '@/domain';
+import { Board, Column, ColumnEntity, Subtask, UserEntity } from '@/domain';
 
 export class BoardEntity implements Board {
 	private constructor(
@@ -38,5 +38,16 @@ export class BoardEntity implements Board {
 			isAdmin,
 			isMember,
 		};
+	}
+
+	static getSubtaskById(board: BoardEntity, subtaskId: Subtask['id']): Subtask | undefined {
+		for (const column of board.columns) {
+			for (const task of column.tasks) {
+				const subtask = task.subtasks.find((subtask) => subtask.id === subtaskId);
+				if (subtask) {
+					return subtask;
+				}
+			}
+		}
 	}
 }
