@@ -32,3 +32,4 @@ export * from '@/domain/use-cases/board/get-board.use-case';
 export * from '@/domain/use-cases/board/get-user-boards.use-case';
 export * from '@/domain/use-cases/board/update-board.use-case';
 export * from '@/domain/use-cases/board/interfaces';
+export * from '@/domain/use-cases/board/update-subtask.use-case';

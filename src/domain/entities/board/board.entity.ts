@@ -50,4 +50,16 @@ export class BoardEntity implements Board {
 			}
 		}
 	}
+	static getUsersTaskBySubtask(board: BoardEntity, subtaskId: string | number): string[] | undefined {
+		for (const column of board.columns) {
+			for (const task of column.tasks) {
+				const subtask = task.subtasks.find((subtask) => subtask.id === subtaskId);
+				if (subtask) {
+					return task.users;
+				}
+			}
+		}
+
+		return undefined;
+	}
 }
