@@ -1,10 +1,54 @@
 import { CreateTaskDto, CustomError } from '@/domain';
 
 describe('Test on CreateTaskDto', () => {
+	const boardId = 1;
 	//Errors
-	test('Should throw an error if TITLE is not defined', () => {
+	test('Should throw an error if BOARD ID is not defined', () => {
 		//Arrange
 		const mockDto = {};
+		const expectedError = CustomError.badRequest('Error on Board ID');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if BOARD ID is not a string', () => {
+		//Arrange
+		const mockDto = {
+			boardId: false,
+		};
+		const expectedError = CustomError.badRequest('Error on Board ID');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if BOARD ID is not a number', () => {
+		//Arrange
+		const mockDto = {
+			boardId: false,
+		};
+		const expectedError = CustomError.badRequest('Error on Board ID');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if TITLE is not defined', () => {
+		//Arrange
+		const mockDto = { boardId, task: {} };
 		const expectedError = CustomError.badRequest('Error on task title');
 
 		//Act
@@ -18,7 +62,10 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if TITLE is not a string', () => {
 		//Arrange
 		const mockDto = {
-			title: false,
+			boardId,
+			task: {
+				title: false,
+			},
 		};
 		const expectedError = CustomError.badRequest('Error on task title');
 
@@ -33,7 +80,10 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if STATUS is not defined', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
+			boardId,
+			task: {
+				title: 'Test title',
+			},
 		};
 		const expectedError = CustomError.badRequest('Error on task status');
 
@@ -45,11 +95,14 @@ describe('Test on CreateTaskDto', () => {
 		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
-	test('Should throw an error if STATUS is not defined', () => {
+	test('Should throw an error if STATUS is not a string', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
-			status: false,
+			boardId,
+			task: {
+				title: 'Test title',
+				status: false,
+			},
 		};
 		const expectedError = CustomError.badRequest('Error on task status');
 
@@ -64,10 +117,14 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if DESCRIPTION is not a string', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
-			status: 'Todo',
-			description: false,
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				description: false,
+			},
 		};
+
 		const expectedError = CustomError.badRequest('Error on task description');
 
 		//Act
@@ -81,10 +138,10 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if typeof USERS is not an array', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
-			status: 'Todo',
-			users: 1,
+			boardId,
+			task: { title: 'Test title', status: 'Todo', users: 1 },
 		};
+
 		const expectedError = CustomError.badRequest('Invalid task users ids');
 
 		//Act
@@ -98,9 +155,12 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if typeof USERS are not number or string', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
-			status: 'Todo',
-			users: [1, '1', false],
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				users: [1, '1', false],
+			},
 		};
 		const expectedError = CustomError.badRequest('Invalid task users ids');
 
@@ -115,10 +175,13 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if SUBTASKS is not an array', () => {
 		//Arrange
 		const mockDto = {
-			title: 'Test title',
-			status: 'Todo',
-			users: [],
-			subtasks: 1,
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				users: [],
+				subtasks: 1,
+			},
 		};
 		const expectedError = CustomError.badRequest('Invalid users subtasks');
 
@@ -134,12 +197,14 @@ describe('Test on CreateTaskDto', () => {
 		//Arrange
 		const mockFailedSubtask = 1;
 		const mockDto = {
-			title: 'Test title',
-			status: 'Todo',
-			users: [],
-			subtasks: [mockFailedSubtask],
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				users: [],
+				subtasks: [mockFailedSubtask],
+			},
 		};
-
 		//Act
 		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
@@ -152,26 +217,32 @@ describe('Test on CreateTaskDto', () => {
 	test('Should return a createTaskDto', () => {
 		//Arrange
 		const mockCreateTaskDto = {
-			title: 'Test title',
-			status: 'Todo',
-			users: [1, 2, 3],
-			subtasks: [
-				{
-					title: 'Subtasks title',
-				},
-			],
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				users: [1, 2, 3],
+				subtasks: [
+					{
+						title: 'Subtasks title',
+					},
+				],
+			},
 		};
 		const expectedDto = {
-			title: 'Test title',
-			status: 'Todo',
-			description: '',
-			users: [1, 2, 3],
-			subtasks: [
-				{
-					title: 'Subtasks title',
-					isCompleted: false,
-				},
-			],
+			boardId,
+			task: {
+				title: 'Test title',
+				status: 'Todo',
+				description: '',
+				users: [1, 2, 3],
+				subtasks: [
+					{
+						title: 'Subtasks title',
+						isCompleted: false,
+					},
+				],
+			},
 		};
 
 		//Act

@@ -2,17 +2,26 @@ import { CustomError, ICreateSubtaskDto, ICreateTaskDto } from '@/domain';
 import { CreateSubtaskDto } from '../subtask/create-subtask.dto';
 import { isArray } from 'lodash';
 type AnyObject = { [key: string]: any };
+
 export class CreateTaskDto implements ICreateTaskDto {
 	private constructor(
-		public title: string, //Required
-		public status: string, //Required
-		public users: string[],
-		public description: string,
-		public subtasks: ICreateSubtaskDto[],
+		public boardId: string | number, //Required
+		public task: {
+			title: string; //Required
+			status: string; //Required
+			users: string[];
+			description: string;
+			subtasks: ICreateSubtaskDto[];
+		},
 	) {}
 
 	static create(object: AnyObject): { error?: CustomError; failedSubtask?: AnyObject; createTaskDto?: CreateTaskDto } {
-		const { title, status, description = '', users = [] } = object;
+		const { boardId, task } = object;
+
+		if (!boardId || (typeof boardId !== 'string' && typeof boardId !== 'number')) {
+			return { error: CustomError.badRequest('Error on Board ID') };
+		}
+		const { title, status } = task;
 
 		if (!title || typeof title !== 'string') {
 			return { error: CustomError.badRequest('Error on task title') };
@@ -21,6 +30,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 		if (!status || typeof title !== 'string') {
 			return { error: CustomError.badRequest('Error on task status') };
 		}
+		const { description = '', users = [] } = task;
 		if (typeof description !== 'string') {
 			return { error: CustomError.badRequest('Error on task description') };
 		}
@@ -43,7 +53,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 		}
 
 		//Subtasks
-		let { subtasks = [] } = object;
+		let { subtasks = [] } = task;
 		if (!isArray(subtasks)) {
 			return {
 				error: CustomError.badRequest('Invalid users subtasks'),
@@ -61,8 +71,15 @@ export class CreateTaskDto implements ICreateTaskDto {
 			subtasks = createSubtaskDtos;
 		}
 
+		const okTask = {
+			title,
+			status,
+			users,
+			description,
+			subtasks,
+		};
 		return {
-			createTaskDto: new CreateTaskDto(title, status, users, description, subtasks),
+			createTaskDto: new CreateTaskDto(boardId, okTask),
 		};
 	}
 }

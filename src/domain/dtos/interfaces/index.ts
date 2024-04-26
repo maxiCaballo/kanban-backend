@@ -36,11 +36,14 @@ export interface IUpdateSubtaskDto {
 }
 
 export interface ICreateTaskDto {
-	title: string;
-	description: string;
-	subtasks: ICreateSubtaskDto[];
-	users: string[];
-	status: string;
+	boardId: string | number;
+	task: {
+		title: string;
+		description: string;
+		subtasks: ICreateSubtaskDto[];
+		users: string[];
+		status: string;
+	};
 }
 export interface ICreateSubtaskDto {
 	title: string;

@@ -10,7 +10,7 @@
 		"populate-mongo-db": "TS_NODE_PROJECT='./tsconfig.json' ts-node -r tsconfig-paths/register ./src/data/seed/populate.mongo.procedure.ts",
 		"docker:test": "docker compose -f docker-compose.test.yml --env-file .env.test up -d",
 		"test": "yarn docker:test && jest",
-		"test:watch runInband": "yarn docker:test && jest --watch --runInBand",
+		"test:watch runInBand": "yarn docker:test && jest --watch --runInBand",
 		"test:watch": "yarn docker:test && jest --watch",
 		"test:coverage": "yarn docker:test && jest --coverage"
 	},
