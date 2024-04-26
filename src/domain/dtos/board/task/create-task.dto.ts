@@ -1,7 +1,7 @@
 import { CustomError, ICreateSubtaskDto, ICreateTaskDto } from '@/domain';
 import { CreateSubtaskDto } from '../subtask/create-subtask.dto';
 import { isArray } from 'lodash';
-
+type AnyObject = { [key: string]: any };
 export class CreateTaskDto implements ICreateTaskDto {
 	private constructor(
 		public title: string, //Required
@@ -11,15 +11,18 @@ export class CreateTaskDto implements ICreateTaskDto {
 		public subtasks: ICreateSubtaskDto[],
 	) {}
 
-	static create(object: { [key: string]: any }): { error?: CustomError; createTaskDto?: CreateTaskDto } {
+	static create(object: AnyObject): { error?: CustomError; failedSubtask?: AnyObject; createTaskDto?: CreateTaskDto } {
 		const { title, status, description = '', users = [] } = object;
 
-		if (!title) {
-			return { error: CustomError.badRequest('Missing task title') };
+		if (!title || typeof title !== 'string') {
+			return { error: CustomError.badRequest('Error on task title') };
 		}
 
-		if (!status) {
-			return { error: CustomError.badRequest('Missing task status') };
+		if (!status || typeof title !== 'string') {
+			return { error: CustomError.badRequest('Error on task status') };
+		}
+		if (typeof description !== 'string') {
+			return { error: CustomError.badRequest('Error on task description') };
 		}
 
 		//Users
@@ -47,11 +50,12 @@ export class CreateTaskDto implements ICreateTaskDto {
 			};
 		}
 		if (subtasks.length > 0) {
-			const { error, createSubtaskDtos } = CreateSubtaskDto.formArray(subtasks);
+			const { error, failedSubtask, createSubtaskDtos } = CreateSubtaskDto.formArray(subtasks);
 
 			if (error) {
 				return {
 					error,
+					failedSubtask,
 				};
 			}
 			subtasks = createSubtaskDtos;

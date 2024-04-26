@@ -21,6 +21,7 @@ export class CreateSubtaskDto implements ICreateSubtaskDto {
 
 	static formArray(objects: anyObject[]): {
 		error?: CustomError;
+		failedSubtask?: anyObject;
 		createSubtaskDtos?: CreateSubtaskDto[];
 	} {
 		const createSubtaskDtos = [];
@@ -28,7 +29,7 @@ export class CreateSubtaskDto implements ICreateSubtaskDto {
 			const { error, createSubtaskDto } = CreateSubtaskDto.create(object);
 
 			if (error) {
-				return { error };
+				return { error, failedSubtask: object };
 			}
 
 			createSubtaskDtos.push(createSubtaskDto!);

@@ -5,13 +5,29 @@ describe('Test on CreateTaskDto', () => {
 	test('Should throw an error if TITLE is not defined', () => {
 		//Arrange
 		const mockDto = {};
-		const expectedError = CustomError.badRequest('Missing task title');
+		const expectedError = CustomError.badRequest('Error on task title');
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if TITLE is not a string', () => {
+		//Arrange
+		const mockDto = {
+			title: false,
+		};
+		const expectedError = CustomError.badRequest('Error on task title');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
 	test('Should throw an error if STATUS is not defined', () => {
@@ -19,13 +35,47 @@ describe('Test on CreateTaskDto', () => {
 		const mockDto = {
 			title: 'Test title',
 		};
-		const expectedError = CustomError.badRequest('Missing task status');
+		const expectedError = CustomError.badRequest('Error on task status');
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if STATUS is not defined', () => {
+		//Arrange
+		const mockDto = {
+			title: 'Test title',
+			status: false,
+		};
+		const expectedError = CustomError.badRequest('Error on task status');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
+		expect(error).toEqual(expectedError);
+	});
+	test('Should throw an error if DESCRIPTION is not a string', () => {
+		//Arrange
+		const mockDto = {
+			title: 'Test title',
+			status: 'Todo',
+			description: false,
+		};
+		const expectedError = CustomError.badRequest('Error on task description');
+
+		//Act
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
+
+		//Assert
+		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
 	test('Should throw an error if typeof USERS is not an array', () => {
@@ -38,10 +88,11 @@ describe('Test on CreateTaskDto', () => {
 		const expectedError = CustomError.badRequest('Invalid task users ids');
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
 	test('Should throw an error if typeof USERS are not number or string', () => {
@@ -54,10 +105,11 @@ describe('Test on CreateTaskDto', () => {
 		const expectedError = CustomError.badRequest('Invalid task users ids');
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
 	test('Should throw an error if SUBTASKS is not an array', () => {
@@ -71,27 +123,30 @@ describe('Test on CreateTaskDto', () => {
 		const expectedError = CustomError.badRequest('Invalid users subtasks');
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(error).toEqual(expectedError);
 	});
 	test('Should throw an error if SUBTASKS are not valid', () => {
 		//Arrange
+		const mockFailedSubtask = 1;
 		const mockDto = {
 			title: 'Test title',
 			status: 'Todo',
 			users: [],
-			subtasks: [1],
+			subtasks: [mockFailedSubtask],
 		};
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);
 
 		//Assert
 		expect(createTaskDto).toBeUndefined();
 		expect(error).toBeInstanceOf(CustomError);
+		expect(failedSubtask).toEqual(mockFailedSubtask);
 	});
 	//Ok
 	test('Should return a createTaskDto', () => {
@@ -120,10 +175,11 @@ describe('Test on CreateTaskDto', () => {
 		};
 
 		//Act
-		const { error, createTaskDto } = CreateTaskDto.create(mockCreateTaskDto);
+		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockCreateTaskDto);
 
 		//Assert
 		expect(error).toBeUndefined();
+		expect(failedSubtask).toBeUndefined();
 		expect(createTaskDto).toEqual(expectedDto);
 	});
 });
