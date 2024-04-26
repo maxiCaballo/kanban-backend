@@ -1,8 +1,7 @@
-import { mongoDbTest } from '../../../../helpers/mongo';
-import { testServer } from '../../../../test-server';
-import { CustomError, UpdateSubtaskDto, UpdateSubtaskUseCase } from '@/domain';
+import { mongoDbTest } from '../../../tests/helpers/mongo';
+import { BoardEntity, CustomError, UpdateSubtaskDto, UpdateSubtaskUseCase } from '@/domain';
 import { Types } from 'mongoose';
-import { seedData } from '@/data';
+import { BoardModel, seedData } from '@/data';
 import { BoardRepositoryImpl, BoardDatasourceMongoImpl } from '@/infrastructure';
 
 const boardDatasourceMongoImpl = new BoardDatasourceMongoImpl();
@@ -11,11 +10,16 @@ const boardRepository = new BoardRepositoryImpl(boardDatasourceMongoImpl);
 const updateSubtaskUseCase = new UpdateSubtaskUseCase(boardRepository);
 
 describe('Test on update-subtask.use-case.ts', () => {
+	let boardDb;
+	let boardDbEntity: BoardEntity;
+
 	beforeAll(async () => {
 		await mongoDbTest.connect();
-		testServer.start();
 		await mongoDbTest.deleteAllData();
 		await mongoDbTest.insertFakeData();
+
+		boardDb = await BoardModel.findById(seedData.boards[0]._id);
+		boardDbEntity = BoardEntity.fromObject(boardDb!);
 	});
 
 	beforeEach(async () => {
@@ -24,16 +28,15 @@ describe('Test on update-subtask.use-case.ts', () => {
 	});
 
 	afterAll(async () => {
-		// await mongoDbTest.deleteAllData();
-		testServer.close();
+		await mongoDbTest.deleteAllData();
 		await mongoDbTest.disconnect();
 	});
 	//Errors
 	test('Should return an error if user is not an admin or board member', async () => {
 		//Arrange
-		const { _id: id, title, isCompleted } = seedData.boards[0].columns[0].tasks[0].subtasks[0];
+		const { id, title, isCompleted } = boardDbEntity.columns[0].tasks[0].subtasks[0];
 		const mockUpdateSubtaskDto = {
-			boardId: seedData.boards[0]._id,
+			boardId: boardDbEntity.id,
 			subtask: {
 				id,
 				title,
@@ -53,9 +56,9 @@ describe('Test on update-subtask.use-case.ts', () => {
 	});
 	test('Should return an error if user is not assigned to subtask and is not an admin', async () => {
 		//Arrange
-		const { _id: id, title, isCompleted } = seedData.boards[0].columns[0].tasks[0].subtasks[0];
+		const { id, title, isCompleted } = boardDbEntity.columns[0].tasks[0].subtasks[0];
 		const mockUpdateSubtaskDto = {
-			boardId: seedData.boards[0]._id,
+			boardId: boardDbEntity.id,
 			subtask: {
 				id,
 				title,

@@ -1,6 +1,4 @@
-import { Board, DeleteBoardDto, RegisterBoardDto, Subtask } from '@/domain';
-import { UpdateBoardDto } from '../../../dtos/board/update-board.dto';
-import { UpdateSubtaskDto } from '../../../dtos/board/update-subtask.dto';
+import { Board, DeleteBoardDto, RegisterBoardDto, Subtask, UpdateBoardDto, UpdateSubtaskDto } from '@/domain';
 
 export interface BoardResponse {
 	board: Board;

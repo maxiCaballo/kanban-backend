@@ -1,4 +1,3 @@
-import { Board } from '../../entities/interfaces/index';
 import {
 	IUpdateSubtaskUseCase,
 	UpdateSubtaskDto,
@@ -27,10 +26,12 @@ export class UpdateSubtaskUseCase implements IUpdateSubtaskUseCase {
 			if (!usersSubtask) {
 				throw CustomError.notFound('Subtask not found');
 			}
-			const isUserAssignedToSubtask = usersSubtask.find((subtaskUserId) => subtaskUserId.toString() === userId);
 
-			if (!isAdmin && !isUserAssignedToSubtask) {
-				throw CustomError.unAuthorized();
+			if (!isAdmin) {
+				const isUserAssignedToSubtask = usersSubtask.find((subtaskUserId) => subtaskUserId.toString() === userId);
+				if (!isUserAssignedToSubtask) {
+					throw CustomError.unAuthorized();
+				}
 			}
 
 			const updatedBoard = await this.boardRepository.updateSubtask(updateSubtaskDto);
@@ -43,3 +44,8 @@ export class UpdateSubtaskUseCase implements IUpdateSubtaskUseCase {
 		}
 	}
 }
+
+/*
+ 1. Si no es ni admin ni usuario no puede editar la tarea.
+ 2. Si no es admin pero es miembro, puede editar solo la subtarea a la que pertenece.
+*/

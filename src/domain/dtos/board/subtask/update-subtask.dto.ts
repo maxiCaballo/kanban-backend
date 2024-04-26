@@ -1,7 +1,7 @@
 import { CustomError, IUpdateSubtaskDto, deleteUndefinedProps } from '@/domain';
 
 export class UpdateSubtaskDto implements IUpdateSubtaskDto {
-	constructor(
+	private constructor(
 		public readonly boardId: string | number,
 		public subtask: {
 			id: string | number;

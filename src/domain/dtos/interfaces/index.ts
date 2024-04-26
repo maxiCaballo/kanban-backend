@@ -34,3 +34,15 @@ export interface IUpdateSubtaskDto {
 		isCompleted?: boolean;
 	};
 }
+
+export interface ICreateTaskDto {
+	title: string;
+	description: string;
+	subtasks: ICreateSubtaskDto[];
+	users: string[];
+	status: string;
+}
+export interface ICreateSubtaskDto {
+	title: string;
+	isCompleted: boolean;
+}

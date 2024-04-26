@@ -33,7 +33,7 @@ describe('Test on board routes', () => {
 	});
 
 	afterAll(async () => {
-		// await mongoDbTest.deleteAllData();
+		await mongoDbTest.deleteAllData();
 		testServer.close();
 		await mongoDbTest.disconnect();
 	});
