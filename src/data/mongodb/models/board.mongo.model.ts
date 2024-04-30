@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import {
 	SubtaskSchema,
 	TaskSchema,
@@ -32,6 +32,7 @@ const taskSchema = new Schema<TaskSchema>(
 		status: {
 			type: String,
 			required: [true, 'Task status is required'],
+			set: (value: string) => value.toLowerCase(),
 		},
 	},
 	{ timestamps: true },
@@ -40,6 +41,7 @@ const columnSchema = new Schema<ColumnSchema>({
 	name: {
 		type: String,
 		required: [true, 'Column name is required'],
+		set: (value: string) => value.toLowerCase(),
 	},
 	tasks: [taskSchema],
 });

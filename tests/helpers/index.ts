@@ -1,5 +1,5 @@
 import { Board, BoardEntity, Column, Subtask, SubtaskEntity, Task, TaskEntity } from '@/domain';
-import _ from 'lodash';
+import { LodashAdapter as _ } from '@/config';
 
 export function compareSubtasks(subtasks: Subtask[], subtaskToCompares: Subtask[]): boolean {
 	const areNotTheSameLength = !(subtasks.length === subtaskToCompares.length);
@@ -14,7 +14,7 @@ export function compareSubtasks(subtasks: Subtask[], subtaskToCompares: Subtask[
 			return false;
 		}
 
-		const areNotEqual = !_.isEqual(subtask, subTaskToCompare);
+		const areNotEqual = !_.areEquals(subtask, subTaskToCompare);
 
 		if (areNotEqual) {
 			return false;
@@ -36,7 +36,7 @@ export function compareTasks(tasks: Task[], tasksToCompare: Task[]) {
 			return false;
 		}
 
-		const areNotEqual = !_.isEqual(task, taskToCompare);
+		const areNotEqual = !_.areEquals(task, taskToCompare);
 
 		if (areNotEqual) {
 			return false;

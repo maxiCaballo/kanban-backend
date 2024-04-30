@@ -1,4 +1,5 @@
-import { Board, Column, ColumnEntity, Subtask, UserEntity } from '@/domain';
+import { Board, Column, ColumnEntity, Subtask, Task, TaskEntity, UserEntity } from '@/domain';
+import { LodashAdapter as _ } from '@/config';
 
 export class BoardEntity implements Board {
 	private constructor(
@@ -49,6 +50,7 @@ export class BoardEntity implements Board {
 				}
 			}
 		}
+		return undefined;
 	}
 	static getUsersTaskBySubtask(board: BoardEntity, subtaskId: string | number): string[] | undefined {
 		for (const column of board.columns) {
