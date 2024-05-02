@@ -78,7 +78,7 @@ describe('Test on update-subtask.use-case.ts', () => {
 	});
 	test('Should return an error if subtask do not exist on board', async () => {
 		//Arrange
-		const { _id: id, title, isCompleted } = seedData.boards[0].columns[0].tasks[0].subtasks[0];
+		const { title, isCompleted } = seedData.boards[0].columns[0].tasks[0].subtasks[0];
 		const mockUpdateSubtaskDto = {
 			boardId: seedData.boards[0]._id,
 			subtask: {

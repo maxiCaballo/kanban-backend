@@ -1,6 +1,9 @@
 import { CustomError, ICreateSubtaskDto, ICreateTaskDto } from '@/domain';
 import { CreateSubtaskDto } from '../subtask/create-subtask.dto';
 import { isArray } from 'lodash';
+
+//Todo, testear y cambiar que si los ids no son MongoId validos arrojar error y testear
+//Todo que status y title se esten enviando en lowercase
 type AnyObject = { [key: string]: any };
 
 export class CreateTaskDto implements ICreateTaskDto {
@@ -27,7 +30,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 			return { error: CustomError.badRequest('Error on task title') };
 		}
 
-		if (!status || typeof title !== 'string') {
+		if (!status || typeof status !== 'string') {
 			return { error: CustomError.badRequest('Error on task status') };
 		}
 		const { description = '', users = [] } = task;
@@ -72,8 +75,8 @@ export class CreateTaskDto implements ICreateTaskDto {
 		}
 
 		const okTask = {
-			title,
-			status,
+			title: title.toLowerCase(),
+			status: status.toLowerCase(),
 			users,
 			description,
 			subtasks,

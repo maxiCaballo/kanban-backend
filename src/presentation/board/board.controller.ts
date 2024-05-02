@@ -14,7 +14,6 @@ import {
 import { controllerErrorResponse, controllerSuccessResponse } from '@/presentation';
 
 //TODO: CASO DE USO UPDATE BOARD
-//TODO: CASO DE USO OBTENER TABLEROS POR USERID
 
 export class BoardController {
 	constructor(private readonly boardRepository: BoardRepository) {}

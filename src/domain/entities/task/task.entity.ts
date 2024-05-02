@@ -1,3 +1,4 @@
+import { MongoDb } from '@/data';
 import { Task, Subtask, SubtaskEntity } from '@/domain';
 
 export class TaskEntity implements Task {
@@ -12,11 +13,20 @@ export class TaskEntity implements Task {
 
 	//Mapper
 	static fromObject(object: { [key: string]: any }) {
-		const { id, _id, title, description = '', subtasks = [], users = [], status } = object;
+		const { id, _id, title, description = '', subtasks = [], status } = object;
 
 		if (!id && !_id) throw new Error('TaskEntity.fromObject() => Missing id || _id');
 		if (!title) throw new Error('TaskEntity.fromObject() => Missing title');
 		if (!status) throw new Error('TaskEntity.fromObject() => Missing status');
+
+		let { users = [] } = object;
+		if (users.length > 0) {
+			const areValidMongoIds = MongoDb.isValidMongoId(users);
+
+			if (areValidMongoIds) {
+				users = MongoDb.fromObjectId(users);
+			}
+		}
 
 		let subtasksEntity: Subtask[] = [];
 
