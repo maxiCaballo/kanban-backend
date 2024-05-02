@@ -19,9 +19,11 @@ export * from '@/domain/dtos/interfaces';
 //Datasources
 export * from '@/domain/datasources/auth.datasource';
 export * from '@/domain/datasources/board.datasource';
+export * from '@/domain/datasources/task.datasource';
 //Repositories
 export * from '@/domain/repositories/auth.repository';
 export * from '@/domain/repositories/board.repository';
+export * from '@/domain/repositories/task.repository';
 //Error
 export * from '@/domain/error/custom-error.error';
 //Use cases
