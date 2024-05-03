@@ -81,8 +81,9 @@ export class CreateTaskDto implements ICreateTaskDto {
 			description,
 			subtasks,
 		};
+		const createTaskDto = new CreateTaskDto(boardId, okTask);
 		return {
-			createTaskDto: new CreateTaskDto(boardId, okTask),
+			createTaskDto,
 		};
 	}
 }

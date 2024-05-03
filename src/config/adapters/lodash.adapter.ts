@@ -1,4 +1,4 @@
-import _, { forEach, isArray } from 'lodash';
+import _ from 'lodash';
 
 type AnyObject = { [key: string]: any };
 
@@ -22,9 +22,6 @@ export class LodashAdapter {
 		return _.isEqual(obj1, obj2);
 	}
 	static listOfObjectsAreEquals(value: AnyObject[], other: AnyObject[], propertyToOmit?: string): boolean {
-		let obj1 = this.cloneDeep(value);
-		let obj2 = this.cloneDeep(other);
-
 		for (const element of value) {
 			const elementExist = other.find((elementToCompare) => this.areEquals(element, elementToCompare, propertyToOmit));
 
@@ -33,6 +30,10 @@ export class LodashAdapter {
 			}
 		}
 		return true;
+	}
+	static getDifferentElementsFromArray<T>(listWithDifferntElements: T[], other: T[]): T[] {
+		const diferrentElements = _.differenceWith(listWithDifferntElements, other, _.isEqual);
+		return diferrentElements;
 	}
 
 	static cloneDeep(value: AnyObject) {
