@@ -26,9 +26,9 @@ export class MongoDb {
 
 	static isValidMongoId(data: any | any[]) {
 		if (Array.isArray(data)) {
-			return data.every((element) => Types.ObjectId.isValid(element));
+			return data.every((element) => Types.ObjectId.isValid(String(element)));
 		}
-		return Types.ObjectId.isValid(data);
+		return Types.ObjectId.isValid(String(data));
 	}
 	static fromObjectId(data: string[] | string) {
 		if (!Array.isArray(data)) {

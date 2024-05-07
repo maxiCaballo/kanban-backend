@@ -8,7 +8,7 @@ const board1 = {
 	name: 'Platform Launch',
 	columns: [
 		{
-			name: 'Todo',
+			name: 'todo',
 			_id: '661ee7be53a30b492609cb60',
 			tasks: [
 				{
@@ -32,7 +32,7 @@ const board1 = {
 						},
 					],
 					users: ['65fb34bafd3f5c84bc4b1ed4', '65fb34bafd3f5c84bc4b1ed5'],
-					status: 'Todo',
+					status: 'todo',
 					_id: '661ee7be53a30b492609cb61',
 				},
 				{
@@ -91,7 +91,7 @@ const board1 = {
 			],
 		},
 		{
-			name: 'Doing',
+			name: 'doing',
 			tasks: [
 				{
 					title: 'Design settings and search pages',
@@ -232,7 +232,7 @@ const board1 = {
 			_id: '661ee7be53a30b492609cb6d',
 		},
 		{
-			name: 'Done',
+			name: 'done',
 			tasks: [
 				{
 					title: 'Conduct 5 wireframe tests',

@@ -1,4 +1,4 @@
-import { CustomError, IUpdateSubtaskDto, deleteUndefinedProps } from '@/domain';
+import { CustomError, IUpdateSubtaskDto, deleteUndefinedProps, isValidId } from '@/domain';
 
 export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 	private constructor(
@@ -16,7 +16,7 @@ export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 	} {
 		//*Boardid
 		const { boardId } = object;
-		if (!boardId || (typeof boardId !== 'number' && typeof boardId !== 'string')) {
+		if (!isValidId(boardId)) {
 			return {
 				error: CustomError.badRequest('Invalid ID'),
 			};
@@ -32,7 +32,7 @@ export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 		//*Subtask
 		const { id } = object.subtask;
 
-		if (!id || (typeof id !== 'number' && typeof id !== 'string')) {
+		if (!isValidId(id)) {
 			return {
 				error: CustomError.badRequest('Invalid ID'),
 			};

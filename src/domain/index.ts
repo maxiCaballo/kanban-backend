@@ -16,6 +16,7 @@ export * from '@/domain/dtos/board/register-board.dto';
 export * from '@/domain/dtos/board/delete-board.dto';
 export * from '@/domain/dtos/board/update-board.dto';
 export * from '@/domain/dtos/board/task/create-task.dto';
+export * from '@/domain/dtos/board/task/delete-task.dto';
 export * from '@/domain/dtos/board/subtask/update-subtask.dto';
 export * from '@/domain/dtos/board/subtask/create-subtask.dto';
 export * from '@/domain/dtos/helpers';

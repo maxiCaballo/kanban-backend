@@ -34,7 +34,7 @@ export interface IUpdateSubtaskDto {
 		isCompleted?: boolean;
 	};
 }
-
+//Task
 export interface ICreateTaskDto {
 	boardId: string | number;
 	task: {
@@ -44,6 +44,10 @@ export interface ICreateTaskDto {
 		users: string[];
 		status: string;
 	};
+}
+export interface IDeleteTaskDto {
+	boardId: string | number;
+	taskId: string | number;
 }
 export interface ICreateSubtaskDto {
 	title: string;

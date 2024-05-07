@@ -1,3 +1,5 @@
+import { MongoDb } from '@/data';
+
 export function deleteUndefinedProps<T extends object>(object: T): Partial<T> {
 	const objectWithPartialsProps: Partial<T> = {};
 
@@ -8,4 +10,12 @@ export function deleteUndefinedProps<T extends object>(object: T): Partial<T> {
 	}
 
 	return objectWithPartialsProps;
+}
+
+export function isValidId(id: any): boolean {
+	if (typeof id !== 'string' && typeof id !== 'number') return false;
+
+	if (!MongoDb.isValidMongoId(id)) return false;
+
+	return true;
 }

@@ -40,7 +40,6 @@ export class BoardEntity implements Board {
 			isMember,
 		};
 	}
-
 	static getSubtaskById(board: BoardEntity, subtaskId: Subtask['id']): Subtask | undefined {
 		for (const column of board.columns) {
 			for (const task of column.tasks) {
@@ -63,5 +62,12 @@ export class BoardEntity implements Board {
 		}
 
 		return undefined;
+	}
+	static getTasksById(board: BoardEntity, taskId: string | number): Task | undefined {
+		for (const column of board.columns) {
+			const task = column.tasks.find((task) => task.id === taskId);
+
+			return task;
+		}
 	}
 }

@@ -7,7 +7,7 @@ type TokenPayload = Payload;
 
 interface CreateParams {
 	tokenPayload: TokenPayload;
-	[key: string]: string | TokenPayload;
+	[key: string]: any | TokenPayload;
 }
 
 export class RegisterBoardDto implements IRegisterBoardDto {

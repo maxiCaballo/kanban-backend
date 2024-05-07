@@ -1,9 +1,7 @@
-import { CustomError, ICreateSubtaskDto, ICreateTaskDto } from '@/domain';
+import { CustomError, ICreateSubtaskDto, ICreateTaskDto, isValidId } from '@/domain';
 import { CreateSubtaskDto } from '../subtask/create-subtask.dto';
 import { isArray } from 'lodash';
 
-//Todo, testear y cambiar que si los ids no son MongoId validos arrojar error y testear
-//Todo que status y title se esten enviando en lowercase
 type AnyObject = { [key: string]: any };
 
 export class CreateTaskDto implements ICreateTaskDto {
@@ -21,7 +19,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 	static create(object: AnyObject): { error?: CustomError; failedSubtask?: AnyObject; createTaskDto?: CreateTaskDto } {
 		const { boardId, task } = object;
 
-		if (!boardId || (typeof boardId !== 'string' && typeof boardId !== 'number')) {
+		if (!isValidId(boardId)) {
 			return { error: CustomError.badRequest('Error on Board ID') };
 		}
 		const { title, status } = task;
@@ -45,9 +43,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 			};
 		}
 		if (users.length > 0) {
-			const typeofError = users.some((id: string | number) => {
-				if (typeof id !== 'number' && typeof id !== 'string') return true;
-			});
+			const typeofError = users.some((id: string | number) => !isValidId(id));
 
 			if (typeofError)
 				return {

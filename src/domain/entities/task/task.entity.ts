@@ -2,13 +2,13 @@ import { MongoDb } from '@/data';
 import { Task, Subtask, SubtaskEntity } from '@/domain';
 
 export class TaskEntity implements Task {
-	constructor(
-		public id: string,
-		public title: string,
+	private constructor(
+		public id: string, //Required
+		public title: string, //Required
 		public description: string,
 		public subtasks: Subtask[],
 		public users: string[],
-		public status: string,
+		public status: string, //Required
 	) {}
 
 	//Mapper
