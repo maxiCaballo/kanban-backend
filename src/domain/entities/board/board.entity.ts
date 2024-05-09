@@ -40,6 +40,18 @@ export class BoardEntity implements Board {
 			isMember,
 		};
 	}
+	static isMemberOrAdminByUserIds(board: BoardEntity, usersIds: string[] | number[]): boolean {
+		for (const user of usersIds) {
+			const { isMember, isAdmin } = this.isMemberOrAdminByUserId(board, user);
+
+			if (!isMember && !isAdmin) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	static getSubtaskById(board: BoardEntity, subtaskId: Subtask['id']): Subtask | undefined {
 		for (const column of board.columns) {
 			for (const task of column.tasks) {
@@ -63,7 +75,7 @@ export class BoardEntity implements Board {
 
 		return undefined;
 	}
-	static getTasksById(board: BoardEntity, taskId: string | number): Task | undefined {
+	static getTaskById(board: BoardEntity, taskId: string | number): Task | undefined {
 		for (const column of board.columns) {
 			const task = column.tasks.find((task) => task.id === taskId);
 

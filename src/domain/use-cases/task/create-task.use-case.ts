@@ -4,38 +4,64 @@ import {
 	CreateTaskDto,
 	ICreateTaskUseCase,
 	TaskResponse,
-	BoardRepository,
 	CustomError,
 	TaskRepository,
 	Task,
+	BoardEntity,
+	GetBoardUseCase,
 } from '@/domain';
 
 export class CreateTaskUseCase implements ICreateTaskUseCase {
-	constructor(private readonly boardRepository: BoardRepository, private readonly taskRepository: TaskRepository) {}
+	constructor(private readonly getBoardUseCase: GetBoardUseCase, private readonly taskRepository: TaskRepository) {}
 
 	async execute(createTaskDto: CreateTaskDto): Promise<TaskResponse> {
-		const { boardId, task } = createTaskDto;
+		const { boardId, userId, task } = createTaskDto;
 
 		try {
-			const boardDb = await this.boardRepository.getBoard(boardId);
+			//Validations
+			//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
+			const userExist = await UserModel.exists({ _id: userId });
 
-			const column = boardDb.columns.find((column) => column.name === task.status);
+			if (!userExist) {
+				throw CustomError.notFound(`User: ${userId} not found`);
+			}
+
+			const { board: boardEntity } = await this.getBoardUseCase.execute(boardId, userId);
+
+			const column = boardEntity.columns.find((column) => column.name === task.status);
 
 			if (!column) {
 				throw CustomError.notFound(`Column '${task.status}' not found`);
 			}
-			const users = task.users;
 
-			if (users.length > 0) {
-				for (const user of users) {
-					const userExist = await UserModel.exists({ _id: user });
+			const { isMember } = BoardEntity.isMemberOrAdminByUserId(boardEntity, userId);
 
-					if (!userExist) {
-						throw CustomError.notFound(`User in task: ${user} not found `);
-					}
+			const validMemebers = BoardEntity.isMemberOrAdminByUserIds(boardEntity, task.users);
+
+			if (!validMemebers) {
+				throw CustomError.unAuthorized(`Some user is not a member of this Board`);
+			}
+
+			//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
+			//Check if task users exist on db
+			task.users.forEach(async (user) => {
+				const doNotExistOnDb = !(await UserModel.exists({ _id: user }));
+
+				if (doNotExistOnDb) {
+					//should not be occur
+					throw CustomError.internalServer();
+				}
+			});
+
+			if (isMember) {
+				const memberIsInUsersTask = task.users.find((user) => user === String(userId));
+
+				if (!memberIsInUsersTask) {
+					task.users.push(String(userId));
 				}
 			}
 
+			//Create Task
 			const updatedTasks = await this.taskRepository.createTask(createTaskDto);
 
 			const tasksBeforeUpdate = column.tasks ?? [];
@@ -59,3 +85,7 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 		}
 	}
 }
+
+//? - Si al crear una tarea esa persona no se encuentra asignada al tablero y no es admin, no puede crear la tarea.
+//? - Al crear una tarea si es miembro del tablero pero no admin automaticamente se vuelve miembro de la tarea.
+//? - Al crear una tarea si es admin no se agrega a miembros de la tareas, ya lo es implicitamente.

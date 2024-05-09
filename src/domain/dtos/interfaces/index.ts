@@ -37,6 +37,7 @@ export interface IUpdateSubtaskDto {
 //Task
 export interface ICreateTaskDto {
 	boardId: string | number;
+	userId: string | number;
 	task: {
 		title: string;
 		description: string;

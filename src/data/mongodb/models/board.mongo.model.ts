@@ -76,8 +76,6 @@ boardSchema.virtual('shared').get(function () {
 });
 
 //Middlewares
-//Todo: validar que al insertar usuarios al tablero y a las tareas no exista previamente, hacerlo con un "pre save".
-//Todo: validar que al asignar un usuario a una tarea este se encuentre asignado al tablero.
 
 //After the board is created I save that board in the user, the $addToSet guarantees me that that board does not exist.
 //If it exists it does nothing and if it does not exist it adds it.

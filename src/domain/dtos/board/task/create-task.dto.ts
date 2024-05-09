@@ -7,6 +7,7 @@ type AnyObject = { [key: string]: any };
 export class CreateTaskDto implements ICreateTaskDto {
 	private constructor(
 		public boardId: string | number, //Required
+		public userId: string | number, //Required -> from Payload
 		public task: {
 			title: string; //Required
 			status: string; //Required
@@ -17,10 +18,13 @@ export class CreateTaskDto implements ICreateTaskDto {
 	) {}
 
 	static create(object: AnyObject): { error?: CustomError; failedSubtask?: AnyObject; createTaskDto?: CreateTaskDto } {
-		const { boardId, task } = object;
+		const { boardId, userId, task } = object;
 
 		if (!isValidId(boardId)) {
 			return { error: CustomError.badRequest('Error on Board ID') };
+		}
+		if (!isValidId(userId)) {
+			return { error: CustomError.badRequest('Invalid user ID') };
 		}
 		const { title, status } = task;
 
@@ -31,7 +35,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 		if (!status || typeof status !== 'string') {
 			return { error: CustomError.badRequest('Error on task status') };
 		}
-		const { description = '', users = [] } = task;
+		let { description = '', users = [] } = task;
 		if (typeof description !== 'string') {
 			return { error: CustomError.badRequest('Error on task description') };
 		}
@@ -49,6 +53,8 @@ export class CreateTaskDto implements ICreateTaskDto {
 				return {
 					error: CustomError.badRequest('Invalid task users ids'),
 				};
+
+			users = users.map((id) => String(id));
 		}
 
 		//Subtasks
@@ -77,7 +83,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 			description,
 			subtasks,
 		};
-		const createTaskDto = new CreateTaskDto(boardId, okTask);
+		const createTaskDto = new CreateTaskDto(boardId, userId, okTask);
 		return {
 			createTaskDto,
 		};

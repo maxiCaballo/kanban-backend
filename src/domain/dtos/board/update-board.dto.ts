@@ -2,7 +2,7 @@ import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps } from '@/do
 
 export class UpdateBoardDto implements IUpdateBoardDto {
 	private constructor(
-		public id: string | number,
+		public id: string | number, //Required
 		public name?: string,
 		public columns?: Column[],
 		public shared?: boolean,

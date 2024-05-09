@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { AuthRoutes, JwtMiddleware, UserRoutes, BoardRoutes } from '@/presentation';
+import { AuthRoutes, JwtMiddleware, UserRoutes, BoardRoutes, TaskRoutes } from '@/presentation';
 
 export class AppRoutes {
 	static get routes(): Router {
@@ -11,6 +11,7 @@ export class AppRoutes {
 
 		router.use('/api/users', UserRoutes.routes);
 		router.use('/api/boards', BoardRoutes.routes);
+		router.use('/api/tasks', TaskRoutes.routes);
 
 		return router;
 	}
