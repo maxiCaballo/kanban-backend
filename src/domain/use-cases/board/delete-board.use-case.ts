@@ -1,4 +1,3 @@
-import { BoardModel } from '@/data';
 import {
 	DeleteBoardDto,
 	IDeleteBoardUseCase,

@@ -1,31 +1,34 @@
-import {
-	DeleteTaskDto,
-	IDeleteTaskUseCase,
-	TaskResponse,
-	TaskRepository,
-	BoardRepository,
-	CustomError,
-	BoardEntity,
-} from '@/domain';
+import { GetBoardUseCase } from '../board/get-board.use-case';
+import { DeleteTaskDto, IDeleteTaskUseCase, TaskResponse, TaskRepository, CustomError, BoardEntity } from '@/domain';
 
 export class DeleteTaskUseCase implements IDeleteTaskUseCase {
-	constructor(private readonly boardRepository: BoardRepository, private readonly taskRepository: TaskRepository) {}
+	constructor(private readonly getBoardUseCase: GetBoardUseCase, private readonly taskRepository: TaskRepository) {}
 
 	async execute(deleteTaskDto: DeleteTaskDto): Promise<TaskResponse> {
-		const { boardId, taskId } = deleteTaskDto;
+		const { boardId, taskId, userId } = deleteTaskDto;
 
 		try {
-			const boardDb = await this.boardRepository.getBoard(boardId);
+			const { board } = await this.getBoardUseCase.execute(boardId, userId);
 
-			const boardEntity = BoardEntity.fromObject(boardDb);
-
-			const task = BoardEntity.getTaskById(boardEntity, taskId);
+			const task = BoardEntity.getTaskById(board, taskId);
 
 			if (!task) {
 				throw CustomError.notFound('Task not found');
 			}
-		} catch (error) {}
 
-		throw new Error('Method not implemented.');
+			const deletedTask = await this.taskRepository.deleteTask(deleteTaskDto);
+
+			if (!deletedTask) {
+				throw CustomError.internalServer();
+			}
+
+			return {
+				task: deletedTask,
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
 }
+
+//Todo: TESTEAR DELETE USE CASE

@@ -88,4 +88,5 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 
 //? - Si al crear una tarea esa persona no se encuentra asignada al tablero y no es admin, no puede crear la tarea.
 //? - Al crear una tarea si es miembro del tablero pero no admin automaticamente se vuelve miembro de la tarea.
-//? - Al crear una tarea si es admin no se agrega a miembros de la tareas, ya lo es implicitamente.
+//? - Al crear una tarea si es admin no se agrega a miembros de la tareas, ya lo es implicitamente pero si es admin
+//? y la crea va a estar en la lista de usuarios de esa tarea.

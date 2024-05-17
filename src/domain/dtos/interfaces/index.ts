@@ -47,6 +47,7 @@ export interface ICreateTaskDto {
 	};
 }
 export interface IDeleteTaskDto {
+	userId: string | number;
 	boardId: string | number;
 	taskId: string | number;
 }
