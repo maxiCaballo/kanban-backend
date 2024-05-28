@@ -183,7 +183,7 @@ describe('Test on CreateTaskDto', () => {
 				subtasks: 1,
 			},
 		};
-		const expectedError = CustomError.badRequest('Invalid users subtasks');
+		const expectedError = CustomError.badRequest('Invalid subtasks');
 
 		//Act
 		const { error, failedSubtask, createTaskDto } = CreateTaskDto.create(mockDto);

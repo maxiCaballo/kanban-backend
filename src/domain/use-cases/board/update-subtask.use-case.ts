@@ -46,6 +46,6 @@ export class UpdateSubtaskUseCase implements IUpdateSubtaskUseCase {
 }
 
 /*
- 1. Si no es ni admin ni usuario no puede editar la tarea.
+ 1. Si no es ni admin ni usuario no puede editar la subtarea.
  2. Si no es admin pero es miembro, puede editar solo la subtarea a la que pertenece.
 */

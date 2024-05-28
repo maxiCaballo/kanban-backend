@@ -1,4 +1,4 @@
-import { Board, Column, ColumnEntity, Subtask, Task, TaskEntity, UserEntity } from '@/domain';
+import { Board, Column, ColumnEntity, Subtask, Task, UserEntity } from '@/domain';
 import { LodashAdapter as _ } from '@/config';
 
 export class BoardEntity implements Board {
@@ -82,4 +82,13 @@ export class BoardEntity implements Board {
 			return task;
 		}
 	}
+
+	//Instances methods
+	// getTaskById(taskId: string | number) {
+	// 	for (const column of this.columns) {
+	// 		const task = column.tasks.find((task) => task.id === taskId);
+
+	// 		return task;
+	// 	}
+	// }
 }

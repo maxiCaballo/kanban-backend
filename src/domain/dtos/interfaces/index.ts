@@ -1,4 +1,4 @@
-import { Column, Subtask } from '@/domain';
+import { Column } from '@/domain';
 //Auth
 export interface IRegisterUserDto {
 	name: string;
@@ -26,14 +26,7 @@ export interface IUpdateBoardDto {
 	users?: string[];
 	admin?: string;
 }
-export interface IUpdateSubtaskDto {
-	boardId: string | number;
-	subtask: {
-		id: string | number;
-		title?: string;
-		isCompleted?: boolean;
-	};
-}
+
 //Task
 export interface ICreateTaskDto {
 	boardId: string | number;
@@ -51,7 +44,30 @@ export interface IDeleteTaskDto {
 	boardId: string | number;
 	taskId: string | number;
 }
+export interface IUpdateTaskDto {
+	boardId: string;
+	userId: string | number;
+	task: {
+		id: string;
+		title?: string;
+		description?: string;
+		users?: string[];
+		status?: string;
+		subtasks?: (IFullSubtask | Partial<IFullSubtask>)[];
+	};
+}
+
+//Subtask
+export interface IFullSubtask {
+	id: string | number;
+	title?: string;
+	isCompleted?: boolean;
+}
 export interface ICreateSubtaskDto {
 	title: string;
 	isCompleted: boolean;
+}
+export interface IUpdateSubtaskDto {
+	boardId: string | number;
+	subtask: IFullSubtask;
 }

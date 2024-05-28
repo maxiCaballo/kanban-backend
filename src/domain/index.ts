@@ -15,10 +15,11 @@ export * from '@/domain/dtos/auth/login.dto';
 export * from '@/domain/dtos/board/register-board.dto';
 export * from '@/domain/dtos/board/delete-board.dto';
 export * from '@/domain/dtos/board/update-board.dto';
-export * from '@/domain/dtos/board/task/create-task.dto';
-export * from '@/domain/dtos/board/task/delete-task.dto';
-export * from '@/domain/dtos/board/subtask/update-subtask.dto';
-export * from '@/domain/dtos/board/subtask/create-subtask.dto';
+export * from '@/domain/dtos/task/create-task.dto';
+export * from '@/domain/dtos/task/delete-task.dto';
+export * from '@/domain/dtos/task/update-task.dto';
+export * from '@/domain/dtos/subtask/update-subtask.dto';
+export * from '@/domain/dtos/subtask/create-subtask.dto';
 export * from '@/domain/dtos/helpers';
 export * from '@/domain/dtos/interfaces';
 

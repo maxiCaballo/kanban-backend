@@ -61,7 +61,7 @@ export class CreateTaskDto implements ICreateTaskDto {
 		let { subtasks = [] } = task;
 		if (!isArray(subtasks)) {
 			return {
-				error: CustomError.badRequest('Invalid users subtasks'),
+				error: CustomError.badRequest('Invalid subtasks'),
 			};
 		}
 		if (subtasks.length > 0) {

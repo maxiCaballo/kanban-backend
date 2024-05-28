@@ -42,9 +42,9 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 				throw CustomError.unAuthorized(`Some user is not a member of this Board`);
 			}
 
-			//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
 			//Check if task users exist on db
 			task.users.forEach(async (user) => {
+				//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
 				const doNotExistOnDb = !(await UserModel.exists({ _id: user }));
 
 				if (doNotExistOnDb) {
@@ -71,8 +71,12 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 			const differentsTasks = _.getDifferentElementsFromArray<Task>(updatedTasks, tasksBeforeUpdate);
 
 			if (!(differentsTasks.length === 1)) {
+				await this.taskRepository.deleteTask({
+					boardId: String(boardId),
+					userId: String(userId),
+					taskId: updatedTask!.id,
+				});
 				throw CustomError.internalServer();
-				//Todo: reverse update delete
 			}
 
 			updatedTask = differentsTasks[0];
@@ -88,5 +92,5 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 
 //? - Si al crear una tarea esa persona no se encuentra asignada al tablero y no es admin, no puede crear la tarea.
 //? - Al crear una tarea si es miembro del tablero pero no admin automaticamente se vuelve miembro de la tarea.
-//? - Al crear una tarea si es admin no se agrega a miembros de la tareas, ya lo es implicitamente pero si es admin
-//? y la crea va a estar en la lista de usuarios de esa tarea.
+//? - Al crear una tarea si es admin quien la crea y el no se agrega como miembro de la tarea, no va a aparecer como tal,
+//? sinembargo si se agrega si va a aparecer, pero igualmente va a poder editar la tarea de las dos formas.

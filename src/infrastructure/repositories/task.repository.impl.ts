@@ -1,4 +1,4 @@
-import { CreateTaskDto, Task, TaskRepository, TaskDatasource, DeleteTaskDto } from '@/domain';
+import { CreateTaskDto, Task, TaskRepository, TaskDatasource, DeleteTaskDto, UpdateTaskDto } from '@/domain';
 
 export class TaskRepositoryImpl implements TaskRepository {
 	constructor(private readonly taskDatasource: TaskDatasource) {}
@@ -8,5 +8,8 @@ export class TaskRepositoryImpl implements TaskRepository {
 	}
 	deleteTask(deleteTaskDto: DeleteTaskDto): Promise<Task> {
 		return this.taskDatasource.deleteTask(deleteTaskDto);
+	}
+	updateTask(updateTaskDto: UpdateTaskDto): Promise<Task> {
+		return this.updateTask(updateTaskDto);
 	}
 }

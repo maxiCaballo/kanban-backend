@@ -1,10 +1,10 @@
-import { Board, IGetUserBoardsUseCase, BoardRepository, BoardsResponse, BoardEntity, CustomError } from '@/domain';
+import { Board, IGetUserBoardsUseCase, BoardRepository, BoardsResponse, BoardEntity } from '@/domain';
 
 export class GetUserBoards implements IGetUserBoardsUseCase {
 	constructor(private readonly boardRepository: BoardRepository) {}
 
 	async execute(userId: string | number): Promise<BoardsResponse> {
-		const boards = await this.boardRepository.getUserBoards(userId);
+		const boards = (await this.boardRepository.getUserBoards(userId)) as BoardEntity[];
 
 		//This verification is for security reasons if db fail
 		const filteredBoards = boards.filter((board) => {

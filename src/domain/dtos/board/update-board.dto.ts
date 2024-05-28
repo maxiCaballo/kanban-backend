@@ -1,4 +1,4 @@
-import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps } from '@/domain';
+import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps, isValidId } from '@/domain';
 
 export class UpdateBoardDto implements IUpdateBoardDto {
 	private constructor(
@@ -17,9 +17,7 @@ export class UpdateBoardDto implements IUpdateBoardDto {
 	} {
 		const { id, name, columns, shared, users, admin } = data;
 
-		//Id validations
-
-		if (!id || (typeof id !== 'number' && typeof id !== 'string')) {
+		if (!isValidId(id)) {
 			return {
 				error: CustomError.badRequest('Invalid Id'),
 			};
@@ -34,9 +32,9 @@ export class UpdateBoardDto implements IUpdateBoardDto {
 
 		//Ok
 		const updateBoardDto = new UpdateBoardDto(id, name, columns, shared, users, admin);
-		const anyPropIsUndefined = Object.values(updateBoardDto).some((valueProp) => valueProp === undefined);
+		const somePropIsUndefined = Object.values(updateBoardDto).some((valueProp) => valueProp === undefined);
 
-		if (anyPropIsUndefined) {
+		if (somePropIsUndefined) {
 			return {
 				updateBoardDto: deleteUndefinedProps<UpdateBoardDto>(updateBoardDto),
 			};
