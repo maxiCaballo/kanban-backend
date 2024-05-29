@@ -6,3 +6,4 @@ build/
 mongo/
 mongo-test/
 coverage/
+.DS_Store
