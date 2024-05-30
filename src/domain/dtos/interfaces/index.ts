@@ -69,5 +69,5 @@ export interface ICreateSubtaskDto {
 }
 export interface IUpdateSubtaskDto {
 	boardId: string | number;
-	subtask: IFullSubtask;
+	subtask: IFullSubtask | Partial<IFullSubtask>;
 }

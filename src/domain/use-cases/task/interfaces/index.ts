@@ -1,4 +1,4 @@
-import { Task, CreateTaskDto, DeleteTaskDto } from '@/domain';
+import { Task, CreateTaskDto, DeleteTaskDto, UpdateTaskDto } from '@/domain';
 
 export interface TaskResponse {
 	task: Task;
@@ -9,4 +9,7 @@ export interface ICreateTaskUseCase {
 }
 export interface IDeleteTaskUseCase {
 	execute(deleteTaskDto: DeleteTaskDto): Promise<TaskResponse>;
+}
+export interface IUpdateTaskUseCase {
+	execute(updateTaskDto: UpdateTaskDto): Promise<TaskResponse>;
 }

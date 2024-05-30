@@ -14,7 +14,7 @@ export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 
 	static create(object: anyObject): {
 		error?: CustomError;
-		updateSubtaskDto?: UpdateSubtaskDto | Partial<UpdateSubtaskDto>;
+		updateSubtaskDto?: UpdateSubtaskDto;
 	} {
 		//*Boardid
 		const { boardId } = object;
@@ -66,7 +66,7 @@ export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 	static formArray(objects: anyObject[]): {
 		error?: CustomError;
 		failedSubtask?: anyObject;
-		updateSubtaskDtos?: (UpdateSubtaskDto | Partial<UpdateSubtaskDto>)[];
+		updateSubtaskDtos?: UpdateSubtaskDto[];
 	} {
 		const updateSubtaskDtos = [];
 		for (const object of objects) {

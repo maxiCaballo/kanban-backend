@@ -16,6 +16,7 @@ export interface Board {
 	shared: boolean;
 	users: string[];
 	admin: string;
+	getColumnsNames: () => string[];
 }
 
 export interface Column {
