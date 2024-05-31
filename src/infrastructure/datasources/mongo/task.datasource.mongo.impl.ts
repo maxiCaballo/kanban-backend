@@ -173,6 +173,7 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 			if (!updatedTaskEntity) {
 				throw CustomError.internalServer();
 			}
+
 			return updatedTaskEntity;
 		} catch (error) {
 			throw error;

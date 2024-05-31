@@ -1,5 +1,12 @@
 import { Board, BoardEntity, Column, Subtask, SubtaskEntity, Task, TaskEntity } from '@/domain';
+import { seedData } from '@/data';
 import { LodashAdapter as _ } from '@/config';
+
+export const boardTest = BoardEntity.fromObject(seedData.boards[0]);
+export const columnTest = boardTest.columns[0];
+export const taskTest = columnTest.tasks[0];
+export const adminBoardTest = boardTest.admin;
+export const usersBoardTest = boardTest.users;
 
 export function compareSubtasks(subtasks: Subtask[], subtaskToCompares: Subtask[]): boolean {
 	const areNotTheSameLength = !(subtasks.length === subtaskToCompares.length);

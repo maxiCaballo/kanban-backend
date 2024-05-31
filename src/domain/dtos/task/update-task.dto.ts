@@ -69,10 +69,11 @@ export class UpdateTaskDto implements IUpdateTaskDto {
 				break;
 			}
 
-			if (typeof value !== 'string' && typeof value !== 'undefined')
+			if (typeof value !== 'string' && typeof value !== 'undefined') {
 				return {
 					error: CustomError.badRequest(`Invalid ${key}`),
 				};
+			}
 		}
 
 		const { subtasks } = task;

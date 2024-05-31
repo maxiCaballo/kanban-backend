@@ -11,5 +11,5 @@ export interface IDeleteTaskUseCase {
 	execute(deleteTaskDto: DeleteTaskDto): Promise<TaskResponse>;
 }
 export interface IUpdateTaskUseCase {
-	execute(updateTaskDto: UpdateTaskDto): Promise<TaskResponse>;
+	execute(updateTaskDto: UpdateTaskDto | Partial<UpdateTaskDto>): Promise<TaskResponse>;
 }

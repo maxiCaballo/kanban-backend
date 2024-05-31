@@ -10,6 +10,6 @@ export class TaskRepositoryImpl implements TaskRepository {
 		return this.taskDatasource.deleteTask(deleteTaskDto);
 	}
 	updateTask(updateTaskDto: UpdateTaskDto | Partial<UpdateTaskDto>): Promise<Task> {
-		return this.updateTask(updateTaskDto);
+		return this.taskDatasource.updateTask(updateTaskDto);
 	}
 }

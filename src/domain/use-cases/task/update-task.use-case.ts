@@ -17,28 +17,29 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
 		private readonly updateSubtaskUseCase: UpdateSubtaskUseCase,
 	) {}
 
-	async execute(updateTaskDto: UpdateTaskDto): Promise<TaskResponse> {
+	async execute(updateTaskDto: UpdateTaskDto | Partial<UpdateTaskDto>): Promise<TaskResponse> {
 		const { boardId, userId, task } = updateTaskDto;
+
 		try {
-			const { board: boardDb } = await this.getBoardUseCase.execute(boardId, userId); //I know it is member or admin
+			const { board: boardDb } = await this.getBoardUseCase.execute(boardId!, userId!); //I know it is member or admin
 
 			if (!boardDb) {
 				throw CustomError.notFound('Board not found');
 			}
 
-			if (task.status) {
-				const columnExistOnBoard = Boolean(boardDb.getColumnsNames().find((columnName) => columnName === task.status));
+			if (task!.status) {
+				const columnExistOnBoard = Boolean(boardDb.getColumnsNames().find((columnName) => columnName === task!.status));
 
 				if (!columnExistOnBoard) {
-					throw CustomError.badRequest(`Column ${task.status} do not exist on this board`);
+					throw CustomError.badRequest(`Column ${task!.status} do not exist on this board`);
 				}
 			}
 
-			if (task.users && task.users.length > 0) {
-				const usersOk = BoardEntity.isMemberOrAdminByUserIds(boardDb, task.users);
+			if (task!.users && task!.users.length > 0) {
+				const usersOk = BoardEntity.isMemberOrAdminByUserIds(boardDb, task!.users);
 
 				if (!usersOk) {
-					throw CustomError.unAuthorized(`Some user are not member of this board`);
+					throw CustomError.unAuthorized(`Invalid users`);
 				}
 			}
 
@@ -46,8 +47,8 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
 
 			const updatedSubtasks: Subtask[] = [];
 
-			if (task.subtasks && task.subtasks.length > 0) {
-				const { error, updateSubtaskDtos } = UpdateSubtaskDto.formArray(task.subtasks);
+			if (task!.subtasks && task!.subtasks.length > 0) {
+				const { error, updateSubtaskDtos } = UpdateSubtaskDto.formArray(task!.subtasks);
 
 				if (error) {
 					throw error;

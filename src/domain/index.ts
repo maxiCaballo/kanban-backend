@@ -49,4 +49,5 @@ export * from '@/domain/use-cases/board/interfaces';
 //Task
 export * from '@/domain/use-cases/task/create-task.use-case';
 export * from '@/domain/use-cases/task/delete-task.use-case';
+export * from '@/domain/use-cases/task/update-task.use-case';
 export * from '@/domain/use-cases/task/interfaces';

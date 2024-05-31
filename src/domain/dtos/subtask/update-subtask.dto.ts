@@ -4,9 +4,9 @@ type anyObject = { [key: string]: any };
 
 export class UpdateSubtaskDto implements IUpdateSubtaskDto {
 	private constructor(
-		public readonly boardId: string | number,
+		public readonly boardId: string | number, //Required
 		public subtask: {
-			id: string | number;
+			id: string | number; //Required
 			title?: string;
 			isCompleted?: boolean;
 		},
