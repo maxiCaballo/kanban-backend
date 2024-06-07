@@ -1,4 +1,4 @@
-import { Board, DeleteBoardDto, RegisterBoardDto, Subtask, UpdateBoardDto, UpdateSubtaskDto } from '@/domain';
+import { Board, DeleteBoardDto, RegisterBoardDto, UpdateBoardDto } from '@/domain';
 
 //Responses
 export interface BoardResponse {
@@ -6,9 +6,6 @@ export interface BoardResponse {
 }
 export interface BoardsResponse {
 	boards: Board[];
-}
-export interface SubtaskResponse {
-	subtask: Subtask;
 }
 
 export interface IRegisterBoardUseCase {
@@ -25,7 +22,4 @@ export interface IGetUserBoardsUseCase {
 }
 export interface IUpdateBoardUseCase {
 	execute(updateBoardDto: UpdateBoardDto, userId: string): Promise<BoardResponse>;
-}
-export interface IUpdateSubtaskUseCase {
-	execute(updateSubtaskDto: UpdateSubtaskDto, userId: string): Promise<SubtaskResponse>;
 }

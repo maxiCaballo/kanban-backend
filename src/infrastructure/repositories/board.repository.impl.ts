@@ -27,7 +27,4 @@ export class BoardRepositoryImpl implements BoardRepository {
 	updateBoard(updateBoardDto: UpdateBoardDto | Partial<UpdateBoardDto>): Promise<Board> {
 		return this.boardDatasource.updateBoard(updateBoardDto);
 	}
-	updateSubtask(subtask: UpdateSubtaskDto | Partial<UpdateSubtaskDto>): Promise<Subtask> {
-		return this.boardDatasource.updateSubtask(subtask);
-	}
 }

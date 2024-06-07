@@ -1,5 +1,5 @@
 import { UserModel } from '@/data';
-import { UpdateSubtaskUseCase } from '../board/update-subtask.use-case';
+import { UpdateSubtaskUseCase } from '../subtask/update-subtask.use-case';
 import { BoardEntity, Subtask, SubtaskResponse, UpdateSubtaskDto } from '@/domain';
 import {
 	UpdateTaskDto,

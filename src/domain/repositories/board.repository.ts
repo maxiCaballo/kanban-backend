@@ -5,7 +5,4 @@ export abstract class BoardRepository {
 	abstract getBoard(boardId: string | number): Promise<Board>;
 	abstract getUserBoards(userId: string | number): Promise<Board[]>;
 	abstract updateBoard(updateBoardDto: UpdateBoardDto | Partial<UpdateBoardDto>): Promise<Board>;
-
-	//Subtask
-	abstract updateSubtask(subtask: UpdateSubtaskDto | Partial<UpdateSubtaskDto>): Promise<Subtask>;
 }

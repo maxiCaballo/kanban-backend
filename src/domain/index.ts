@@ -46,7 +46,7 @@ export * from '@/domain/use-cases/board/delete-board.use-case';
 export * from '@/domain/use-cases/board/get-board.use-case';
 export * from '@/domain/use-cases/board/get-user-boards.use-case';
 export * from '@/domain/use-cases/board/update-board.use-case';
-export * from '@/domain/use-cases/board/update-subtask.use-case';
+export * from '@/domain/use-cases/subtask/update-subtask.use-case';
 export * from '@/domain/use-cases/board/interfaces';
 //Task
 export * from '@/domain/use-cases/task/create-task.use-case';
