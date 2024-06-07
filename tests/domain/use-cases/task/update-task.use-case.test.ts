@@ -4,7 +4,6 @@ import {
 	UpdateSubtaskUseCase,
 	CustomError,
 	UpdateTaskDto,
-	CreateSubtaskDto,
 	UpdateSubtaskDto,
 } from '@/domain';
 import { mongoDbTest } from '../../../helpers/mongo';

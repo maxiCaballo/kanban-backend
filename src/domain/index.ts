@@ -27,11 +27,13 @@ export * from '@/domain/dtos/interfaces';
 export * from '@/domain/datasources/auth.datasource';
 export * from '@/domain/datasources/board.datasource';
 export * from '@/domain/datasources/task.datasource';
+export * from '@/domain/datasources/subtask.datasource';
 
 //Repositories
 export * from '@/domain/repositories/auth.repository';
 export * from '@/domain/repositories/board.repository';
 export * from '@/domain/repositories/task.repository';
+export * from '@/domain/repositories/subtask.repository';
 
 //USE CASES
 //Auth
