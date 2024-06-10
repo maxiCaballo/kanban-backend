@@ -90,6 +90,17 @@ export class BoardEntity implements Board {
 	getColumnById(columnId: string) {
 		return this.columns.find((column) => String(column.id) === columnId);
 	}
+
+	getTaskById(taskId: string) {
+		for (const column of this.columns) {
+			const task = column.tasks.find((task) => task.id === taskId);
+			if (task) {
+				return task;
+			}
+		}
+
+		return undefined;
+	}
 	//Instances methods
 	// getTaskById(taskId: string | number) {
 	// 	for (const column of this.columns) {

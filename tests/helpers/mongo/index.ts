@@ -1,5 +1,6 @@
 import { MongoDb, UserModel, BoardModel, seedData } from '@/data';
 import { Types } from 'mongoose';
+import { BoardEntity } from '@/domain';
 
 export const mongoDbTest = {
 	deleteAllData: async () => {
@@ -17,5 +18,14 @@ export const mongoDbTest = {
 	},
 	disconnect: async () => {
 		await MongoDb.disconnect();
+	},
+	getTaskById: async (boardId: string, taskId: string) => {
+		try {
+			const boardDb = await BoardModel.findById(boardId);
+			const boardEntity = BoardEntity.fromObject(boardDb!);
+			return boardEntity.getTaskById(taskId);
+		} catch (error) {
+			throw error;
+		}
 	},
 };

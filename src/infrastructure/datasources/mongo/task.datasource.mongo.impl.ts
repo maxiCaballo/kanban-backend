@@ -1,14 +1,6 @@
 import { BoardModel, MongoDb } from '@/data';
-import {
-	ColumnEntity,
-	CreateTaskDto,
-	CustomError,
-	Task,
-	TaskDatasource,
-	DeleteTaskDto,
-	UpdateTaskDto,
-	BoardEntity,
-} from '@/domain';
+import { LodashAdapter as _ } from '@/config';
+import { ColumnEntity, CreateTaskDto, CustomError, Task, TaskDatasource, UpdateTaskDto, BoardEntity } from '@/domain';
 import { BoardDatasourceMongoImpl } from '@/infrastructure';
 
 export class TaskDatasourceMongoImpl implements TaskDatasource {
@@ -196,7 +188,7 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 			if (task.status !== column.name) {
 				task.status = column.name;
 			}
-			await BoardModel.findOneAndUpdate(
+			const response = await BoardModel.findOneAndUpdate(
 				{
 					_id: boardId,
 					'columns._id': columnId, //If column doesn't exist mongo throw an error
@@ -213,12 +205,26 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 				},
 			);
 
+			if (!response) {
+				throw CustomError.internalServer();
+			}
+
 			await this.deleteTask(taskId, boardId);
 
-			return task;
+			const columna = ColumnEntity.fromObject(response.columns[0]);
+
+			if (!column) {
+				throw CustomError.internalServer();
+			}
+			const updatedTask = columna.tasks.find((value) => _.areEquals(task, value, ['id', 'subtasks']));
+
+			if (!updatedTask) {
+				throw CustomError.internalServer();
+			}
+
+			return updatedTask;
 		} catch (error) {
 			throw error;
 		}
-		throw CustomError.internalServer();
 	}
 }

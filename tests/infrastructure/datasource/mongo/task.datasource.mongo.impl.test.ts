@@ -93,7 +93,6 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 
 				//Act
 				const updatedTasks = await taskDatasourceMongoImpl.createTask(adaptedCreateTaskDto as CreateTaskDto);
-				console.log(updatedTasks);
 
 				const updatedTask = updatedTasks.find((task) => _.areEquals(task, expectedResult, 'id'));
 				expectedResult.id = updatedTask!.id;
@@ -320,15 +319,24 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 			test(`Should move task from 'todo' column to 'doing' column`, async () => {
 				//Arrange
 				const newColumn = '661ee7be53a30b492609cb6d';
+				const oldColumnName = 'todo';
 				const taskId = mockTaskDefault.id;
 
 				try {
 					//Act
+					const taskBeforeUpdate = await mongoDbTest.getTaskById(mockBoardId, taskId);
+					//Assert
+					expect(taskBeforeUpdate).not.toBe(undefined);
+					expect(taskBeforeUpdate).toEqual(mockTaskDefault);
+					expect(taskBeforeUpdate?.status).toBe(oldColumnName);
+
+					//Act
 					const updatedTask = await taskDatasourceMongoImpl.updateColumnTask(taskId, mockBoardId, newColumn);
-					console.log(updatedTask);
+					const taskAfterUpdate = await mongoDbTest.getTaskById(mockBoardId, updatedTask.id);
 
 					//Assert
-					// expect(updatedTask).toEqual(expectedResult);
+					expect(updatedTask).toEqual(taskAfterUpdate);
+					expect(taskAfterUpdate).not.toBe(undefined);
 				} catch (error) {
 					expect(error).toBeUndefined();
 				}
