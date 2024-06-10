@@ -46,10 +46,12 @@ export * from '@/domain/use-cases/board/delete-board.use-case';
 export * from '@/domain/use-cases/board/get-board.use-case';
 export * from '@/domain/use-cases/board/get-user-boards.use-case';
 export * from '@/domain/use-cases/board/update-board.use-case';
-export * from '@/domain/use-cases/subtask/update-subtask.use-case';
 export * from '@/domain/use-cases/board/interfaces';
 //Task
 export * from '@/domain/use-cases/task/create-task.use-case';
 export * from '@/domain/use-cases/task/delete-task.use-case';
 export * from '@/domain/use-cases/task/update-task.use-case';
 export * from '@/domain/use-cases/task/interfaces';
+//Subtask
+export * from '@/domain/use-cases/subtask/interfaces';
+export * from '@/domain/use-cases/subtask/update-subtask.use-case';

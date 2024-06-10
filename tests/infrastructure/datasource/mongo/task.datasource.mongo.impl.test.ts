@@ -93,6 +93,7 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 
 				//Act
 				const updatedTasks = await taskDatasourceMongoImpl.createTask(adaptedCreateTaskDto as CreateTaskDto);
+				console.log(updatedTasks);
 
 				const updatedTask = updatedTasks.find((task) => _.areEquals(task, expectedResult, 'id'));
 				expectedResult.id = updatedTask!.id;
@@ -183,7 +184,7 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 				const taskBeforeDelete = BoardEntity.getTaskById(boardEntityBeforeDelete, taskId);
 
 				//Act
-				const deletedTask = await taskDatasourceMongoImpl.deleteTask(deleteTaskDto as DeleteTaskDto);
+				const deletedTask = await taskDatasourceMongoImpl.deleteTask(deleteTaskDto!.taskId, deleteTaskDto!.boardId);
 
 				const boardDbAfterDelete = await BoardModel.findById(mockBoardId);
 				const boardEntityAfterDelete = BoardEntity.fromObject(boardDbAfterDelete!);
@@ -304,7 +305,6 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 						users: ['65fb34bafd3f5c84bc4b1ed4'],
 					},
 				});
-				console.log(mockTask.users);
 
 				const expectedResult = { ...mockTaskDefault, users: [...mockTaskDefault.users] };
 				try {
@@ -313,6 +313,22 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 
 					//Assert
 					expect(updatedTask).toEqual(expectedResult);
+				} catch (error) {
+					expect(error).toBeUndefined();
+				}
+			});
+			test(`Should move task from 'todo' column to 'doing' column`, async () => {
+				//Arrange
+				const newColumn = '661ee7be53a30b492609cb6d';
+				const taskId = mockTaskDefault.id;
+
+				try {
+					//Act
+					const updatedTask = await taskDatasourceMongoImpl.updateColumnTask(taskId, mockBoardId, newColumn);
+					console.log(updatedTask);
+
+					//Assert
+					// expect(updatedTask).toEqual(expectedResult);
 				} catch (error) {
 					expect(error).toBeUndefined();
 				}

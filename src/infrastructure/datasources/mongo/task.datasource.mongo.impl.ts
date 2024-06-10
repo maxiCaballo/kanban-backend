@@ -11,8 +11,6 @@ import {
 } from '@/domain';
 import { BoardDatasourceMongoImpl } from '@/infrastructure';
 
-//Todo: UPDATE
-
 export class TaskDatasourceMongoImpl implements TaskDatasource {
 	constructor(private readonly boardDatasourceMongoImpl: BoardDatasourceMongoImpl) {}
 
@@ -64,9 +62,7 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 			throw error;
 		}
 	}
-	async deleteTask(deleteTaskDto: DeleteTaskDto): Promise<Task> {
-		const { boardId, taskId } = deleteTaskDto;
-
+	async deleteTask(taskId: string, boardId: string): Promise<Task> {
 		if (!MongoDb.isValidMongoId(boardId) || !MongoDb.isValidMongoId(taskId)) {
 			throw CustomError.badRequest('Invalid Mongo ID');
 		}
@@ -178,5 +174,51 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 		} catch (error) {
 			throw error;
 		}
+	}
+	async updateColumnTask(taskId: string, boardId: string, columnId: string): Promise<Task> {
+		if (!MongoDb.isValidMongoId(boardId) || !MongoDb.isValidMongoId(taskId)) {
+			throw CustomError.badRequest('Invalid Mongo ID');
+		}
+
+		try {
+			const boardDb = await this.boardDatasourceMongoImpl.getBoard(boardId);
+			const task = BoardEntity.getTaskById(boardDb, taskId);
+
+			if (!task) {
+				throw CustomError.notFound('Task not found');
+			}
+			const column = boardDb.getColumnById(columnId);
+
+			if (!column) {
+				throw CustomError.notFound('Column not found');
+			}
+
+			if (task.status !== column.name) {
+				task.status = column.name;
+			}
+			await BoardModel.findOneAndUpdate(
+				{
+					_id: boardId,
+					'columns._id': columnId, //If column doesn't exist mongo throw an error
+				},
+				{
+					$push: {
+						'columns.$[col].tasks': task,
+					},
+				},
+				{
+					arrayFilters: [{ 'col._id': columnId }],
+					new: true,
+					projection: { columns: { $elemMatch: { _id: columnId } } },
+				},
+			);
+
+			await this.deleteTask(taskId, boardId);
+
+			return task;
+		} catch (error) {
+			throw error;
+		}
+		throw CustomError.internalServer();
 	}
 }

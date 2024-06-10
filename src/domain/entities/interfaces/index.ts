@@ -17,6 +17,7 @@ export interface Board {
 	users: string[];
 	admin: string;
 	getColumnsNames: () => string[];
+	getColumnById: (columnId: string) => Column | undefined;
 }
 
 export interface Column {

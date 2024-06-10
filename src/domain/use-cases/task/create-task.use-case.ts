@@ -71,11 +71,7 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 			const differentsTasks = _.getDifferentElementsFromArray<Task>(updatedTasks, tasksBeforeUpdate);
 
 			if (!(differentsTasks.length === 1)) {
-				await this.taskRepository.deleteTask({
-					boardId: String(boardId),
-					userId: String(userId),
-					taskId: updatedTask!.id,
-				});
+				await this.taskRepository.deleteTask(String(updatedTask!.id), String(boardId));
 				throw CustomError.internalServer();
 			}
 

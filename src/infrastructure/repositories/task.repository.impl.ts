@@ -6,10 +6,13 @@ export class TaskRepositoryImpl implements TaskRepository {
 	createTask(createTaskDto: CreateTaskDto): Promise<Task[]> {
 		return this.taskDatasource.createTask(createTaskDto);
 	}
-	deleteTask(deleteTaskDto: DeleteTaskDto): Promise<Task> {
-		return this.taskDatasource.deleteTask(deleteTaskDto);
+	deleteTask(taskId: string, boardId: string): Promise<Task> {
+		return this.taskDatasource.deleteTask(taskId, boardId);
 	}
 	updateTask(updateTaskDto: UpdateTaskDto | Partial<UpdateTaskDto>): Promise<Task> {
 		return this.taskDatasource.updateTask(updateTaskDto);
+	}
+	updateColumnTask(taskId: string, boardId: string, columnId: string): Promise<Task> {
+		return this.taskDatasource.updateColumnTask(taskId, boardId, columnId);
 	}
 }

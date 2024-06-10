@@ -86,6 +86,10 @@ export class BoardEntity implements Board {
 	getColumnsNames() {
 		return this.columns.map((column) => column.name);
 	}
+
+	getColumnById(columnId: string) {
+		return this.columns.find((column) => String(column.id) === columnId);
+	}
 	//Instances methods
 	// getTaskById(taskId: string | number) {
 	// 	for (const column of this.columns) {

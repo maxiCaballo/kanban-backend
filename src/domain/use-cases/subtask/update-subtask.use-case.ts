@@ -1,3 +1,4 @@
+import { SubtaskRepository } from '@/domain';
 import {
 	IUpdateSubtaskUseCase,
 	UpdateSubtaskDto,
@@ -8,7 +9,10 @@ import {
 } from '@/domain';
 
 export class UpdateSubtaskUseCase implements IUpdateSubtaskUseCase {
-	constructor(private readonly boardRepository: BoardRepository) {}
+	constructor(
+		private readonly boardRepository: BoardRepository,
+		private readonly subtaskRepository: SubtaskRepository,
+	) {}
 
 	async execute(updateSubtaskDto: UpdateSubtaskDto, userId: string): Promise<SubtaskResponse> {
 		const { boardId, subtask } = updateSubtaskDto;
@@ -34,7 +38,7 @@ export class UpdateSubtaskUseCase implements IUpdateSubtaskUseCase {
 				}
 			}
 
-			const updatedBoard = await this.boardRepository.updateSubtask(updateSubtaskDto);
+			const updatedBoard = await this.subtaskRepository.updateSubtask(updateSubtaskDto);
 
 			return {
 				subtask: updatedBoard,

@@ -16,7 +16,7 @@ export class DeleteTaskUseCase implements IDeleteTaskUseCase {
 				throw CustomError.notFound('Task not found');
 			}
 
-			const deletedTask = await this.taskRepository.deleteTask(deleteTaskDto);
+			const deletedTask = await this.taskRepository.deleteTask(taskId, boardId);
 
 			if (!deletedTask) {
 				throw CustomError.internalServer();
@@ -30,5 +30,3 @@ export class DeleteTaskUseCase implements IDeleteTaskUseCase {
 		}
 	}
 }
-
-//Todo: TESTEAR DELETE USE CASE
