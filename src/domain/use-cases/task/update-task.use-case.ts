@@ -45,7 +45,7 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
 			const updatedTask = await this.taskRepository.updateTask({ boardId, task });
 
 			const updatedSubtasks: Subtask[] = [];
-
+			//If task have subtasks
 			if (task!.subtasks && task!.subtasks.length > 0) {
 				const { error, updateSubtaskDtos } = UpdateSubtaskDto.formArray(task!.subtasks);
 
@@ -53,17 +53,26 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
 					throw error;
 				}
 
-				for (const subtask of updateSubtaskDtos!) {
-					const updatedSubtask = await this.updateSubtaskUseCase.execute(subtask, String(userId));
+				for (const subtaskDto of updateSubtaskDtos!) {
+					const updatedSubtask = await this.updateSubtaskUseCase.execute(subtaskDto, String(userId));
 
 					updatedSubtasks.push(updatedSubtask.subtask);
 				}
 
 				updatedTask.subtasks = [...updatedTask.subtasks, ...updatedSubtasks];
+			}
+			//If user want to change task column
+			if (task!.status) {
+				const newColumn = boardDb.getColumnByName(task!.status!);
+				const oldColumn = boardDb.getColumnByTaskId(task!.id);
 
-				return {
-					task: updatedTask,
-				};
+				if (!oldColumn || !newColumn) {
+					throw CustomError.internalServer();
+				}
+
+				if (task!.status!.toLocaleLowerCase() !== oldColumn.name) {
+					await this.taskRepository.updateColumnTask(task!.id, boardId!, newColumn.id);
+				}
 			}
 
 			return {

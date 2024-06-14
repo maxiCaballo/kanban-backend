@@ -188,6 +188,7 @@ export class TaskDatasourceMongoImpl implements TaskDatasource {
 			if (task.status !== column.name) {
 				task.status = column.name;
 			}
+
 			const response = await BoardModel.findOneAndUpdate(
 				{
 					_id: boardId,

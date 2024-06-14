@@ -101,12 +101,18 @@ export class BoardEntity implements Board {
 
 		return undefined;
 	}
-	//Instances methods
-	// getTaskById(taskId: string | number) {
-	// 	for (const column of this.columns) {
-	// 		const task = column.tasks.find((task) => task.id === taskId);
+	getColumnByTaskId(taskId: string) {
+		for (const column of this.columns) {
+			const task = column.tasks.find((task) => task.id === taskId);
 
-	// 		return task;
-	// 	}
-	// }
+			if (task) {
+				return column;
+			}
+		}
+
+		return undefined;
+	}
+	getColumnByName(name: string) {
+		return this.columns.find((columns) => columns.name === name.toLocaleLowerCase());
+	}
 }

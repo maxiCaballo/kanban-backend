@@ -5,6 +5,8 @@ import {
 	CustomError,
 	UpdateTaskDto,
 	UpdateSubtaskDto,
+	SubtaskEntity,
+	TaskEntity,
 } from '@/domain';
 import { mongoDbTest } from '../../../helpers/mongo';
 import { boardTest, adminBoardTest, taskTest } from '../../../helpers';
@@ -13,20 +15,24 @@ import {
 	TaskDatasourceMongoImpl,
 	BoardDatasourceMongoImpl,
 	BoardRepositoryImpl,
+	SubtaskRepositoryImpl,
+	SubtaskDatasourceMongoImpl,
 } from '@/infrastructure';
 import { Types } from 'mongoose';
 
 //Datasources
 const boardMongoDatasourceImpl = new BoardDatasourceMongoImpl();
 const taskMongoDatasourceImpl = new TaskDatasourceMongoImpl(boardMongoDatasourceImpl);
+const subtaskMongoDatasource = new SubtaskDatasourceMongoImpl();
 
 //Repositories
 const taskRepositoryImpl = new TaskRepositoryImpl(taskMongoDatasourceImpl);
 const boardRepositoryImpl = new BoardRepositoryImpl(boardMongoDatasourceImpl);
+const subtaskRepositoryImpl = new SubtaskRepositoryImpl(subtaskMongoDatasource);
 
 //Use cases
 const getBoardUseCase = new GetBoardUseCase(boardRepositoryImpl);
-const updateSubtaskUseCase = new UpdateSubtaskUseCase(boardRepositoryImpl);
+const updateSubtaskUseCase = new UpdateSubtaskUseCase(boardRepositoryImpl, subtaskRepositoryImpl);
 const updateTaskUseCase = new UpdateTaskUseCase(getBoardUseCase, taskRepositoryImpl, updateSubtaskUseCase); //Test
 
 describe('Test on update-task.use-case.ts', () => {
@@ -120,25 +126,32 @@ describe('Test on update-task.use-case.ts', () => {
 		test('Should update completely a task', async () => {
 			try {
 				//Arrange
+				const newUser = '65fb34bafd3f5c84bc4b1ed6';
+				const newSubtask = SubtaskEntity.fromObject({ title: 'Subtask title test', id: '661ee7be53a30b492609cb62' });
 				const { updateSubtaskDtos: subtaskDto } = UpdateSubtaskDto.formArray([
-					{ boardId: String(boardTest.id), subtask: { title: 'Subtask title test', id: '661ee7be53a30b492609cb62' } },
+					{ boardId: String(boardTest.id), subtask: newSubtask },
 				]);
-
 				const taskDto = {
 					id: taskTest.id,
 					title: 'Title test',
 					description: 'description test',
-					users: ['65fb34bafd3f5c84bc4b1ed6'],
-					status: 'todo',
+					users: [newUser],
+					status: 'doing',
 					subtasks: subtaskDto,
 				};
+				const expectedResult = TaskEntity.fromObject({
+					...taskDto,
+					users: [...taskTest.users, newUser],
+					subtasks: [...taskTest.subtasks, newSubtask],
+				});
+
 				const dto = { ...updateTaskDto, task: taskDto };
 				//Act
 				const { task } = await updateTaskUseCase.execute(dto as UpdateTaskDto);
-
-				console.log(task);
+				expect(task).toEqual(expectedResult);
 			} catch (error) {
 				console.log(error);
+				expect(error).toBeUndefined();
 			}
 
 			//Assert
