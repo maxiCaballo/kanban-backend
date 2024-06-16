@@ -1,5 +1,4 @@
 import { LodashAdapter as _ } from '@/config';
-import { UserModel } from '@/data';
 import {
 	CreateTaskDto,
 	ICreateTaskUseCase,
@@ -9,18 +8,22 @@ import {
 	Task,
 	BoardEntity,
 	GetBoardUseCase,
+	UserRepository,
 } from '@/domain';
 
 export class CreateTaskUseCase implements ICreateTaskUseCase {
-	constructor(private readonly getBoardUseCase: GetBoardUseCase, private readonly taskRepository: TaskRepository) {}
+	constructor(
+		private readonly getBoardUseCase: GetBoardUseCase,
+		private readonly taskRepository: TaskRepository,
+		private readonly userRepository: UserRepository,
+	) {}
 
 	async execute(createTaskDto: CreateTaskDto): Promise<TaskResponse> {
 		const { boardId, userId, task } = createTaskDto;
 
 		try {
 			//Validations
-			//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
-			const userExist = await UserModel.exists({ _id: userId });
+			const userExist = await this.userRepository.userExist(String(userId));
 
 			if (!userExist) {
 				throw CustomError.notFound(`User: ${userId} not found`);
@@ -43,15 +46,14 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
 			}
 
 			//Check if task users exist on db
-			task.users.forEach(async (user) => {
-				//! usando metodo de mongo, esta mal porque me estoy acoplando a mongodb cambiar por metodo de repositorio o middleware
-				const doNotExistOnDb = !(await UserModel.exists({ _id: user }));
+			for (const user of task.users) {
+				const doNotExistOnDb = !(await this.userRepository.userExist(String(user)));
 
 				if (doNotExistOnDb) {
 					//should not be occur
 					throw CustomError.internalServer();
 				}
-			});
+			}
 
 			if (isMember) {
 				const memberIsInUsersTask = task.users.find((user) => user === String(userId));

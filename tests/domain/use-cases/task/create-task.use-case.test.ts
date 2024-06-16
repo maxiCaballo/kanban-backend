@@ -3,12 +3,17 @@ import {
 	BoardRepositoryImpl,
 	TaskRepositoryImpl,
 	TaskDatasourceMongoImpl,
+	UserDatasourceMongoImpl,
+	UserRepositoryImpl,
 } from '@/infrastructure';
 import { CreateTaskDto, CreateTaskUseCase, CustomError, BoardEntity, GetBoardUseCase } from '@/domain';
 import { BoardModel, seedData } from '@/data';
 import { mongoDbTest } from '../../../helpers/mongo';
 import { Types } from 'mongoose';
 import { LodashAdapter as _ } from '@/config';
+
+const userMongoDatasource = new UserDatasourceMongoImpl();
+const userRepository = new UserRepositoryImpl(userMongoDatasource);
 
 const boardMongoDatasource = new BoardDatasourceMongoImpl();
 const boardRepository = new BoardRepositoryImpl(boardMongoDatasource);
@@ -17,7 +22,7 @@ const taskMongoDatasource = new TaskDatasourceMongoImpl(boardMongoDatasource);
 const taskRepository = new TaskRepositoryImpl(taskMongoDatasource);
 
 const getBoardUseCase = new GetBoardUseCase(boardRepository);
-const createTaskUseCase = new CreateTaskUseCase(getBoardUseCase, taskRepository);
+const createTaskUseCase = new CreateTaskUseCase(getBoardUseCase, taskRepository, userRepository);
 
 describe('Test on create-task.use-case.ts', () => {
 	let boardDb;
@@ -164,9 +169,11 @@ describe('Test on create-task.use-case.ts', () => {
 			const expectedError = CustomError.internalServer();
 
 			await boardRepository.updateBoard({ id: _id, users: [...users, inexistentUserOnDb] });
+
 			try {
 				//Act
 				await createTaskUseCase.execute(mockErrorDto as CreateTaskDto);
+
 				expect(true).toBeFalsy();
 			} catch (error) {
 				//Assert

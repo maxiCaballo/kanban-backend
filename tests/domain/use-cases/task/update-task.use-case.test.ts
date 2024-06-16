@@ -131,6 +131,7 @@ describe('Test on update-task.use-case.ts', () => {
 				const { updateSubtaskDtos: subtaskDto } = UpdateSubtaskDto.formArray([
 					{ boardId: String(boardTest.id), subtask: newSubtask },
 				]);
+
 				const taskDto = {
 					id: taskTest.id,
 					title: 'Title test',
@@ -153,8 +154,32 @@ describe('Test on update-task.use-case.ts', () => {
 				console.log(error);
 				expect(error).toBeUndefined();
 			}
+		});
+		test('Should update only subtask', async () => {
+			try {
+				//Arrange
+				const newSubtask = SubtaskEntity.fromObject({ title: 'Subtask title test', id: '661ee7be53a30b492609cb62' });
+				const { updateSubtaskDtos: subtaskDto } = UpdateSubtaskDto.formArray([
+					{ boardId: String(boardTest.id), subtask: newSubtask },
+				]);
 
-			//Assert
+				const taskDto = {
+					id: taskTest.id,
+					subtasks: subtaskDto,
+				};
+				const expectedResult = TaskEntity.fromObject({
+					...taskTest,
+					subtasks: [...taskTest.subtasks, newSubtask],
+				});
+
+				const dto = { ...updateTaskDto, task: taskDto };
+				//Act
+				const { task } = await updateTaskUseCase.execute(dto as UpdateTaskDto);
+				expect(task).toEqual(expectedResult);
+			} catch (error) {
+				console.log(error);
+				expect(error).toBeUndefined();
+			}
 		});
 	});
 });

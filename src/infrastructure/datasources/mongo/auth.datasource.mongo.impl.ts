@@ -28,7 +28,6 @@ export class AuthDatasourceMongoImpl implements AuthDatasource {
 			throw error;
 		}
 	}
-
 	async login(loginDto: LoginDto): Promise<User> {
 		const { email, password } = loginDto;
 
