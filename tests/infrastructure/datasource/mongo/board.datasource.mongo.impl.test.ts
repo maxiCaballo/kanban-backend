@@ -51,5 +51,17 @@ describe('Test on BoardMongoDatasourceImpl', () => {
 			expect(mockBoardUpdated).toBeInstanceOf(BoardEntity);
 			expect(mockBoardUpdated).toEqual(mockBoard);
 		});
+		test('Should update only columns a board', async () => {
+			//Arrange
+			// const boardDb = await BoardModel.findById(mockBoard.id);
+			// const mockBoardDb = BoardEntity.fromObject(boardDb!);
+			// //Act
+			// const mockBoardUpdated = await boardMongoDatasource.updateBoard(mockUpdateBoardDto as UpdateBoardDto);
+			// //Assert
+			// expect(mockBoard.id).toEqual(mockBoardDb.id);
+			// expect(mockBoard).not.toEqual(mockBoardDb);
+			// expect(mockBoardUpdated).toBeInstanceOf(BoardEntity);
+			// expect(mockBoardUpdated).toEqual(mockBoard);
+		});
 	});
 });

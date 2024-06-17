@@ -1,11 +1,9 @@
-import { ICreateSubtaskDto, CustomError } from '@/domain';
-
-type anyObject = { [key: string]: any };
+import { ICreateSubtaskDto, CustomError, AnyObject } from '@/domain';
 
 export class CreateSubtaskDto implements ICreateSubtaskDto {
 	constructor(public title: string, public isCompleted: boolean = false) {}
 
-	static create(object: anyObject): { error?: CustomError; createSubtaskDto?: CreateSubtaskDto } {
+	static create(object: AnyObject): { error?: CustomError; createSubtaskDto?: CreateSubtaskDto } {
 		const { title } = object;
 
 		if (!title) {
@@ -19,9 +17,9 @@ export class CreateSubtaskDto implements ICreateSubtaskDto {
 		};
 	}
 
-	static formArray(objects: anyObject[]): {
+	static formArray(objects: AnyObject[]): {
 		error?: CustomError;
-		failedSubtask?: anyObject;
+		failedSubtask?: AnyObject;
 		createSubtaskDtos?: CreateSubtaskDto[];
 	} {
 		const createSubtaskDtos = [];

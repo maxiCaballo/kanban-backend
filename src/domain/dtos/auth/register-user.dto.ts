@@ -1,11 +1,11 @@
 import { object, string } from 'yup';
-import { CustomError, IRegisterUserDto } from '@/domain';
+import { AnyObject, CustomError, IRegisterUserDto } from '@/domain';
 import { YupAdapter } from '@/config';
 
 export class RegisterUserDto implements IRegisterUserDto {
 	private constructor(public name: string, public lastname: string, public email: string, public password: string) {}
 
-	static create(data: { [key: string]: string }): { error?: CustomError; registerUserDto?: RegisterUserDto } {
+	static create(data: AnyObject): { error?: CustomError; registerUserDto?: RegisterUserDto } {
 		const { name, email, password, lastname } = data;
 
 		const schema = object({

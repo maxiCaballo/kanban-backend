@@ -1,4 +1,4 @@
-import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps, isValidId } from '@/domain';
+import { IUpdateBoardDto, Column, CustomError, deleteUndefinedProps, isValidId, AnyObject } from '@/domain';
 
 export class UpdateBoardDto implements IUpdateBoardDto {
 	private constructor(
@@ -11,7 +11,7 @@ export class UpdateBoardDto implements IUpdateBoardDto {
 	) {}
 
 	//Class methods
-	static create(data: { [key: string]: any }): {
+	static create(data: AnyObject): {
 		error?: CustomError;
 		updateBoardDto?: UpdateBoardDto | Partial<UpdateBoardDto>;
 	} {

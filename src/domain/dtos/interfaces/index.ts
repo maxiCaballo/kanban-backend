@@ -71,3 +71,11 @@ export interface IUpdateSubtaskDto {
 	boardId: string | number;
 	subtask: IFullSubtask | Partial<IFullSubtask>;
 }
+export interface IDeleteSubtaskDto {
+	boardId: string | number;
+	userId: string | number;
+	subtaskId: string | number;
+}
+
+//Helpers
+export type AnyObject = { [key: string]: any };

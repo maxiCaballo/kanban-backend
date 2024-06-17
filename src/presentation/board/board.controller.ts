@@ -13,8 +13,6 @@ import {
 } from '@/domain';
 import { controllerErrorResponse, controllerSuccessResponse } from '@/presentation';
 
-//TODO: CASO DE USO UPDATE BOARD
-
 export class BoardController {
 	constructor(private readonly boardRepository: BoardRepository) {}
 

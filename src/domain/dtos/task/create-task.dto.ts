@@ -1,8 +1,6 @@
-import { CustomError, ICreateSubtaskDto, ICreateTaskDto, isValidId } from '@/domain';
+import { CustomError, ICreateSubtaskDto, ICreateTaskDto, isValidId, AnyObject } from '@/domain';
 import { CreateSubtaskDto } from '../subtask/create-subtask.dto';
 import { isArray } from 'lodash';
-
-type AnyObject = { [key: string]: any };
 
 export class CreateTaskDto implements ICreateTaskDto {
 	private constructor(

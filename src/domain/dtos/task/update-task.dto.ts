@@ -1,4 +1,12 @@
-import { CustomError, IUpdateTaskDto, isValidId, deleteUndefinedProps, IFullSubtask, UpdateSubtaskDto } from '@/domain';
+import {
+	AnyObject,
+	CustomError,
+	IUpdateTaskDto,
+	isValidId,
+	deleteUndefinedProps,
+	IFullSubtask,
+	UpdateSubtaskDto,
+} from '@/domain';
 
 export class UpdateTaskDto implements IUpdateTaskDto {
 	private constructor(
@@ -18,7 +26,7 @@ export class UpdateTaskDto implements IUpdateTaskDto {
 		if (thisSubtasks?.length === 0 || thisSubtasks === undefined) this.task.subtasks = undefined;
 	}
 
-	static create(object: { [key: string]: any }): {
+	static create(object: AnyObject): {
 		error?: CustomError;
 		updateTaskDto?: UpdateTaskDto | Partial<UpdateTaskDto>;
 	} {

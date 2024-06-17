@@ -1,9 +1,9 @@
-import { CustomError, IDeleteTaskDto, isValidId } from '@/domain';
+import { CustomError, IDeleteTaskDto, isValidId, AnyObject } from '@/domain';
 
 export class DeleteTaskDto implements IDeleteTaskDto {
 	private constructor(public boardId: string, public taskId: string, public userId: string) {}
 
-	static create(object: { [key: string]: any }): { error?: CustomError; deleteTaskDto?: DeleteTaskDto } {
+	static create(object: AnyObject): { error?: CustomError; deleteTaskDto?: DeleteTaskDto } {
 		const { boardId, taskId, userId } = object;
 
 		if (!isValidId(boardId)) {

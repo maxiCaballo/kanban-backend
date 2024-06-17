@@ -1,11 +1,11 @@
 import { object, string } from 'yup';
-import { CustomError, ILoginDto } from '@/domain';
+import { AnyObject, CustomError, ILoginDto } from '@/domain';
 import { YupAdapter } from '@/config';
 
 export class LoginDto implements ILoginDto {
 	private constructor(public email: string, public password: string) {}
 
-	static create(data: { [key: string]: string }): { error?: CustomError; loginDto?: LoginDto } {
+	static create(data: AnyObject): { error?: CustomError; loginDto?: LoginDto } {
 		const { email, password } = data;
 
 		const schema = object({
