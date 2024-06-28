@@ -11,6 +11,7 @@ export class BoardEntity implements Board {
 		public admin: string,
 	) {}
 
+	//Class methods
 	//Mapper
 	static fromObject(object: { [key: string]: any }) {
 		const { id, _id, name, columns = [], shared = false, admin } = object;
@@ -30,7 +31,6 @@ export class BoardEntity implements Board {
 
 		return new BoardEntity(id || _id, name, columnsEntity, shared, users, String(admin));
 	}
-
 	static isMemberOrAdminByUserId(board: BoardEntity, userId: string | number): { isAdmin: boolean; isMember: boolean } {
 		const isMember = Boolean(board.users.find((user) => user === userId));
 		const isAdmin = board.admin === userId;
@@ -51,7 +51,6 @@ export class BoardEntity implements Board {
 
 		return true;
 	}
-
 	static getSubtaskById(board: BoardEntity, subtaskId: Subtask['id']): Subtask | undefined {
 		for (const column of board.columns) {
 			for (const task of column.tasks) {
@@ -82,15 +81,13 @@ export class BoardEntity implements Board {
 			return task;
 		}
 	}
-
+	//Instances methods
 	getColumnsNames() {
 		return this.columns.map((column) => column.name);
 	}
-
 	getColumnById(columnId: string) {
 		return this.columns.find((column) => String(column.id) === columnId);
 	}
-
 	getTaskById(taskId: string) {
 		for (const column of this.columns) {
 			const task = column.tasks.find((task) => task.id === taskId);

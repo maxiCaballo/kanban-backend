@@ -20,6 +20,7 @@ export * from '@/domain/dtos/task/delete-task.dto';
 export * from '@/domain/dtos/task/update-task.dto';
 export * from '@/domain/dtos/subtask/update-subtask.dto';
 export * from '@/domain/dtos/subtask/create-subtask.dto';
+export * from '@/domain/dtos/subtask/delete-subtask.dto';
 export * from '@/domain/dtos/helpers';
 export * from '@/domain/dtos/interfaces';
 
