@@ -1,5 +1,5 @@
 import { mongoDbTest } from '../../../helpers/mongo';
-import { boardTest, columnTest } from '../../../helpers';
+import { boardTest, columnTest, subtaskTest, getSubtaskFromBoardIdAndSubtaskId } from '../../../helpers';
 import { seedData } from '@/data';
 import { LodashAdapter as _ } from '@/config';
 import { UpdateSubtaskDto, CustomError, DeleteSubtaskDto } from '@/domain';
@@ -18,6 +18,7 @@ describe('Test on SubtaskDatasourceMongoImpl', () => {
 		users: [],
 		admin: mockAdminBoard,
 	};
+
 	//Connect
 	beforeAll(async () => {
 		await mongoDbTest.connect();
@@ -182,13 +183,23 @@ describe('Test on SubtaskDatasourceMongoImpl', () => {
 		const { deleteSubtaskDto } = DeleteSubtaskDto.create({
 			boardId: mockBoardId,
 			userId: mockAdminBoard,
-			subtaskId: '661ee7be53a30b492609cb62',
+			subtaskId: subtaskTest.id,
 		});
-		test('Should something', async () => {
+		test('Should delete a subtask', async () => {
 			//Arrange
+			const expectedResult = subtaskTest;
+
+			//Cheking if the subtasks exist before deleting it
+			const subtaskBeforeDelete = await getSubtaskFromBoardIdAndSubtaskId(mockBoardId, subtaskTest.id);
+			expect(subtaskBeforeDelete).toEqual(expectedResult);
+
 			//Act
-			// await subtaskMongoDadasource.deleteSubtask(deleteSubtaskDto!);
+			const deletedSubtask = await subtaskMongoDadasource.deleteSubtask(deleteSubtaskDto!);
+			const subtaskAfterDelete = await getSubtaskFromBoardIdAndSubtaskId(mockBoardId, subtaskTest.id);
+
 			//Assert
+			expect(deletedSubtask).toEqual(expectedResult);
+			expect(subtaskAfterDelete).toBeUndefined();
 		});
 	});
 });

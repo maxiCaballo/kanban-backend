@@ -64,8 +64,6 @@ export class SubtaskDatasourceMongoImpl implements SubtaskDatasource {
 		}
 	}
 	async deleteSubtask(subtaskDto: DeleteSubtaskDto): Promise<Subtask> {
-		console.log('entre aca');
-
 		const { boardId, userId, subtaskId } = subtaskDto;
 
 		const { invalidBoardId, invalidSubtaskId, invalidUserId } = {
@@ -103,15 +101,16 @@ export class SubtaskDatasourceMongoImpl implements SubtaskDatasource {
 				},
 				{
 					projection: { columns: 1 },
-					new: true,
 				},
 			);
 
-			console.log(updatedboardDb);
+			if (!updatedboardDb) {
+				throw CustomError.internalServer();
+			}
+
+			return subtaskEntity;
 		} catch (error) {
 			throw error;
 		}
-
-		throw CustomError.internalServer('Not implemented');
 	}
 }

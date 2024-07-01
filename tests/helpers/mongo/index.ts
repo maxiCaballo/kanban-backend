@@ -1,5 +1,4 @@
 import { MongoDb, UserModel, BoardModel, seedData } from '@/data';
-import { Types } from 'mongoose';
 import { BoardEntity } from '@/domain';
 
 export const mongoDbTest = {

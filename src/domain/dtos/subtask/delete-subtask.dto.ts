@@ -27,6 +27,10 @@ export class DeleteSubtaskDto implements IDeleteSubtaskDto {
 			};
 		}
 
-		throw CustomError.badRequest();
+		const deleteSubtaskDto = new DeleteSubtaskDto(boardId, userId, subtaskId);
+
+		return {
+			deleteSubtaskDto,
+		};
 	}
 }
